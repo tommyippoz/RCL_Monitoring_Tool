@@ -22,7 +22,7 @@ public class ProbeLogger {
 	    FileHandler fh;  
 	    try {  
 	    	ProbeLogger.console = console;
-	    	logger = Logger.getLogger("FantaLogger"); 
+	    	logger = Logger.getLogger("MADneSs_Lite_Logger"); 
 	    	if(logFolder != null) {
 		        fh = new FileHandler(logFolder + "//" + logName + ".log");  
 		        fh.setFormatter(new SimpleFormatter());  
