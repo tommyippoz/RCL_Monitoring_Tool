@@ -1,12 +1,14 @@
 package ippoz.madness.lite.executable;
 
-import java.awt.EventQueue;
+import ippoz.madness.lite.experiment.ExperimentSetup;
+import ippoz.madness.lite.ui.MADneSsLiteUI;
 
-import javax.swing.JFrame;
+import java.awt.EventQueue;
 
 public class MonitoringLiteUI {
 
-	private JFrame frame;
+	private MADneSsLiteUI mUI;
+	private ExperimentSetup expSetup;
 
 	/**
 	 * Launch the application.
@@ -16,7 +18,7 @@ public class MonitoringLiteUI {
 			public void run() {
 				try {
 					MonitoringLiteUI window = new MonitoringLiteUI();
-					window.frame.setVisible(true);
+					window.setFrameVisible();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -24,20 +26,16 @@ public class MonitoringLiteUI {
 		});
 	}
 
+	protected void setFrameVisible() {
+		mUI.setFrameVisible();
+	}
+
 	/**
 	 * Create the application.
 	 */
 	public MonitoringLiteUI() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		expSetup = new ExperimentSetup();
+		mUI = new MADneSsLiteUI(expSetup);
 	}
 
 }

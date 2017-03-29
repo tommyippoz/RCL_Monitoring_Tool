@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="libs/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="libs/ezmorph-0.9.jar"/>
 	<classpathentry kind="lib" path="libs/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="libs/commons-validator-1.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
