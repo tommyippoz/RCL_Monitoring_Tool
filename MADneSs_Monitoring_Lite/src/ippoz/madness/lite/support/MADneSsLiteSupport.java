@@ -21,4 +21,20 @@ public class MADneSsLiteSupport {
 		return ev.isValid(email);
 	}
 
+	public static boolean isValidShellCommand(String text) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean isInteger(String text) {
+		 try { 
+		        Integer.parseInt(text); 
+		    } catch(NumberFormatException e) { 
+		        return false; 
+		    } catch(NullPointerException e) {
+		        return false;
+		    }
+		    return true;
+	}
+
 }

@@ -36,6 +36,7 @@ public class MonitoringLiteUI {
 	public MonitoringLiteUI() {
 		expSetup = new ExperimentSetup();
 		mUI = new MADneSsLiteUI(expSetup);
+		expSetup.init();
 	}
 
 }
