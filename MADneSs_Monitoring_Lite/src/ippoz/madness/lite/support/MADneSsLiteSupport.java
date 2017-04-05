@@ -27,14 +27,28 @@ public class MADneSsLiteSupport {
 	}
 
 	public static boolean isInteger(String text) {
-		 try { 
-		        Integer.parseInt(text); 
-		    } catch(NumberFormatException e) { 
-		        return false; 
-		    } catch(NullPointerException e) {
-		        return false;
-		    }
-		    return true;
+		try { 
+	        Integer.parseInt(text); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    } catch(NullPointerException e) {
+	        return false;
+	    }
+	    return true;
+	}
+
+	public static boolean isValidPath(String pValue) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean isBoolean(String text) {
+		try { 
+	        Boolean.parseBoolean(text); 
+	    } catch(Exception e) { 
+	        return false; 
+	    }
+	    return true;
 	}
 
 }

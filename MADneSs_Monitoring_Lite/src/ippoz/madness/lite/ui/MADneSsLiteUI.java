@@ -4,6 +4,8 @@
 package ippoz.madness.lite.ui;
 
 import ippoz.madness.lite.experiment.ExperimentSetup;
+import ippoz.madness.lite.experiment.runner.ShellExperiment;
+import ippoz.madness.lite.experiment.runner.TimingExperiment;
 import ippoz.madness.lite.support.MADneSsLiteSupport;
 
 import java.awt.BorderLayout;
@@ -14,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -36,6 +39,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @author Tommy
@@ -50,6 +55,15 @@ public class MADneSsLiteUI {
 	private JPanel pExperiments;
 	private JPanel pOutput;
 	private JPanel pFooter;
+	private File pFile;
+	
+	private JTextField txtOutputFolder;
+	
+	private JRadioButton rdbtnShell;
+	private JRadioButton rdbtnTime;
+	private JTextField txtShellCommand;
+	private JTextField txtExpTime;
+	private JTextField txtIterations;
 	
 	public MADneSsLiteUI(ExperimentSetup expSetup){
 		this.expSetup = expSetup;
@@ -75,8 +89,33 @@ public class MADneSsLiteUI {
 	}
 	
 	private void loadPreferencesFile(File selectedFile) {
-		// TODO Auto-generated method stub
+		String errLog = expSetup.loadPreferencesFile(selectedFile, true);
+		if(errLog != null && errLog.length() > 0){
+			JOptionPane.showMessageDialog(frame, errLog, "Preferences Alert", JOptionPane.WARNING_MESSAGE);
+		}
+		formReload();
+	}
+	
+	private void formReload(){
 		
+		// Preferences
+		if(expSetup.getOutputFolder() != null)
+			txtOutputFolder.setText(expSetup.getOutputFolder());
+		
+		// Experiment
+		if(expSetup.getExperimentRunner() != null){
+			if(expSetup.getExperimentRunner() instanceof ShellExperiment){
+				rdbtnShell.setSelected(true);
+				txtShellCommand.setText(expSetup.getExperimentRunner().getDetail());
+			} else if(expSetup.getExperimentRunner() instanceof TimingExperiment){
+				rdbtnTime.setSelected(true);
+				txtExpTime.setText(expSetup.getExperimentRunner().getDetail());
+			}
+		}
+		if(expSetup.getExperimentIterations() > 0)
+			txtIterations.setText(String.valueOf(expSetup.getExperimentIterations()));
+		
+		// Output
 	}
 	
 	private void setHeader(){
@@ -99,6 +138,23 @@ public class MADneSsLiteUI {
 		
 		JPanel pLoadPreferences = new JPanel();
 		
+		JButton bResetPref = new JButton("Reset Preferences");
+		bResetPref.addActionListener(new ActionListener() { 
+			
+			public void actionPerformed(ActionEvent e) { 
+				try {
+					pFile = new File("prefFile.preferences");
+					pFile.createNewFile();
+					loadPreferencesFile(pFile);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		
+		pPreferences.add(bResetPref);
+		
 		JLabel lblLoadPreferences = new JLabel("Existing Preferences");
 		pLoadPreferences.add(lblLoadPreferences);
 		
@@ -106,9 +162,12 @@ public class MADneSsLiteUI {
 		bLoadPref.addActionListener(new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) { 
+				int returnValue = 0;
 				JFileChooser fileChooser = new JFileChooser();
-		        int returnValue = fileChooser.showOpenDialog(null);
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Preferences Files", "preferences"));
+		        returnValue = fileChooser.showOpenDialog(null);
 		        if (returnValue == JFileChooser.APPROVE_OPTION) {
+		        	pFile = fileChooser.getSelectedFile();
 		        	loadPreferencesFile(fileChooser.getSelectedFile());
 		        }
 			}
@@ -121,7 +180,7 @@ public class MADneSsLiteUI {
 		JLabel lblOutFolder = new JLabel("Output Folder");
 		pPreferences.add(lblOutFolder);
 		
-		final JTextField txtOutputFolder = new JTextField();
+		txtOutputFolder = new JTextField();
 		txtOutputFolder.setText("");
 		txtOutputFolder.setEnabled(true);
 		txtOutputFolder.setColumns(15);
@@ -172,12 +231,12 @@ public class MADneSsLiteUI {
 		frame.getContentPane().add(pExperiments, BorderLayout.CENTER);
 		pExperiments.setLayout(new BoxLayout(pExperiments, BoxLayout.Y_AXIS));
 		
-		final JTextField txtShellCommand = new JTextField();
-		final JTextField txtExpTime = new JTextField();
-		final JTextField txtIterations = new JTextField();
+		txtShellCommand = new JTextField();
+		txtExpTime = new JTextField();
+		txtIterations = new JTextField();
 		
 		ButtonGroup group = new ButtonGroup();
-		JRadioButton rdbtnShell = new JRadioButton("Execute shell command");
+		rdbtnShell = new JRadioButton("Execute shell command");
 		rdbtnShell.setHorizontalAlignment(SwingConstants.LEFT);
 		rdbtnShell.addActionListener(new ActionListener() {
 	        @Override
@@ -191,7 +250,6 @@ public class MADneSsLiteUI {
 		group.add(rdbtnShell);
 		
 		txtShellCommand.setText("Shell Command");
-		//txtShellCommand.setColumns(30);
 		txtShellCommand.setMaximumSize(txtShellCommand.getPreferredSize());
 		txtShellCommand.addFocusListener(new FocusListener() {
 		      
@@ -213,7 +271,7 @@ public class MADneSsLiteUI {
 		
 		JPanel pExpTime = new JPanel();
 		
-		JRadioButton rdbtnTime = new JRadioButton("Iterate for");
+		rdbtnTime = new JRadioButton("Iterate for");
 		rdbtnTime.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -461,7 +519,7 @@ public class MADneSsLiteUI {
 			
 		});
 		
-		expSetup.addObserver(new Obser);
+		expSetup.addObserver(new RunExperimentObserver(bLoadPref));
 		
 		pFooter.add(bLoadPref);
 	}

@@ -7,6 +7,8 @@ package ippoz.madness.lite.experiment.runner;
  * @author Tommy
  *
  */
-public class ExperimentRunner {
+public abstract class ExperimentRunner {
+
+	public abstract String getDetail();
 
 }
