@@ -12,8 +12,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author Tommy
@@ -29,22 +31,43 @@ public class AppUtility {
 		return System.getProperty("os.name").toUpperCase().contains("UNIX");
 	}
 	
-	public static Process runScript(String path, String args, boolean setOnFolder, boolean viewOutput) throws IOException{
+	public static LinkedList<String> runScriptInto(String path, String args, boolean setOnFolder) throws IOException {
 		Process p;
+		LinkedList<String> outList = new LinkedList<String>();
 		BufferedReader reader = null;
 		String script = buildScript(path);
 		if(setOnFolder)
 			p = Runtime.getRuntime().exec(script + " " + args, null, new File((new File(path)).getAbsolutePath().replaceAll((new File(path)).getName(), "")));
 		else p = Runtime.getRuntime().exec(script + " " + args);
-		if(viewOutput){
-			reader = new BufferedReader(new InputStreamReader(
-	        p.getInputStream()));
-	        while (reader.ready()) {
-	            System.out.println(reader.readLine());
+		String readed;
+		reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        while ((readed = reader.readLine()) != null) {
+            outList.add(readed);
+        }
+        reader.close();
+		//AppLogger.logInfo(Probe.class, "Executed \"" + script + "\"");
+		return outList;
+	}
+	
+	public static Process runScript(String path, String args, boolean setOnFolder, boolean viewOutput, boolean waitFor) throws IOException{
+		Process p;
+		BufferedReader reader = null;
+		String script = buildScript(path);
+		if(setOnFolder)
+			p = Runtime.getRuntime().exec(script + " " + args, null, new File((new File(path)).getAbsolutePath().replaceAll((new File(path)).getName(), "")));
+		else if(args != null)
+			p = Runtime.getRuntime().exec(script + " " + args);
+		else p = Runtime.getRuntime().exec(script);
+		if(waitFor){
+			String readed;
+			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	        while ((readed = reader.readLine()) != null) {
+	            if(viewOutput)
+	            	System.out.println(readed);
 	        }
 	        reader.close();
         }
-		//AppLogger.logInfo(Probe.class, "Executed \"" + script + "\"");
+		AppLogger.logInfo(AppUtility.class, "Executed \"" + script + "\"");
 		return p;
 	}
 	
@@ -52,6 +75,8 @@ public class AppUtility {
 		String script = path;
 		if(path.endsWith(".jar"))
 			script = "java -jar " + path;
+		else if(path.endsWith(".sh"))
+			script = "sh " + path;		
 		return script;
 	}
 	
@@ -83,6 +108,38 @@ public class AppUtility {
 			AppLogger.logInfo(AppUtility.class, "Unexisting preference file: " + prefFile.getAbsolutePath());
 		}
 		return map;
+	}
+
+	public static HashMap<String, String> readPairsFromCSV(String filename) {
+		HashMap<String, String> pairMap = new HashMap<String, String>();
+		BufferedReader reader;
+		String readed;
+		try {
+			reader = new BufferedReader(new FileReader(new File(filename)));
+			while(reader.ready()){
+				readed = reader.readLine().trim();
+				if(readed.length() > 0 && readed.contains(",")){
+					pairMap.put(readed.split(",")[0].trim().toUpperCase(), readed.split(",")[1].trim());
+				}
+			}
+			reader.close();
+		} catch(Exception ex){
+			AppLogger.logException(AppUtility.class, ex, "Unable to read pair CSV: '" + filename + "'");
+		}
+		return pairMap;
+	}
+
+	public static long parseStringTime(String stringData, int hourOffset) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		try {
+			cal.setTime(format.parse(stringData));
+			cal.add(Calendar.HOUR, hourOffset);
+			return cal.getTimeInMillis();
+		} catch (ParseException ex) {
+			AppLogger.logException(AppUtility.class, ex, "Unable to convert data");
+		}
+		return 0;
 	}
 	
 	public static String formatMillis(long dateMillis){

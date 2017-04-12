@@ -1,0 +1,14 @@
+Apr 12, 2017 2:18:42 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Executing 2 experiments
+Apr 12, 2017 2:18:42 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 1: STARTED
+Apr 12, 2017 2:18:47 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 1: FINISHED
+Apr 12, 2017 2:18:47 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 1: Stored 10 Observations
+Apr 12, 2017 2:18:47 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 2: STARTED
+Apr 12, 2017 2:18:52 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 2: FINISHED
+Apr 12, 2017 2:18:52 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 2: Stored 10 Observations

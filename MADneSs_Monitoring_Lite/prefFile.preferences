@@ -1,0 +1,24 @@
+* Preferences File for RCL Monitoring Tool
+
+* Output Folder
+OUTPUT_FOLDER = ./
+
+* Observation Interval
+OBSERVATION_INTERVAL = 500
+
+* Indicator Preferences File
+INDICATOR_PREFERENCES_FILE = C:\Users\Tommy\git\MADneSs_Lite\MADneSs_Monitoring_Lite\selectedIndicators.preferences
+
+* Experiment Type Shell - Timing
+TIMING_EXPERIMENT = 5
+
+* ExperimentIter
+EXPERIMENT_ITERATIONS = 2
+
+* Output Type
+OUTPUT_TYPE = SINGLE_FILE
+
+* Zip Output
+OUTPUT_ZIP_FLAG = true
+
+* Mail Output

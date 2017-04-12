@@ -3,6 +3,8 @@
  */
 package ippoz.madness.lite.support;
 
+import java.io.File;
+
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
@@ -23,7 +25,7 @@ public class MADneSsLiteSupport {
 
 	public static boolean isValidShellCommand(String text) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public static boolean isInteger(String text) {
@@ -38,8 +40,8 @@ public class MADneSsLiteSupport {
 	}
 
 	public static boolean isValidPath(String pValue) {
-		// TODO Auto-generated method stub
-		return false;
+		File file = new File(pValue);
+		return file.exists();
 	}
 
 	public static boolean isBoolean(String text) {

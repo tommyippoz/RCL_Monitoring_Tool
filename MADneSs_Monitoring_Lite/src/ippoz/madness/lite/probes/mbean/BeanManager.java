@@ -3,16 +3,16 @@
  */
 package ippoz.madness.lite.probes.mbean;
 
+import ippoz.madness.lite.probes.Indicator;
+import ippoz.madness.lite.probes.ProbeType;
 import ippoz.madness.lite.support.ProbeLogger;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,9 +29,6 @@ import javax.management.ReflectionException;
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.CompositeDataSupport;
 import javax.management.openmbean.TabularDataSupport;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * @author Tommy
@@ -66,11 +63,49 @@ public class BeanManager {
 					newAttributes = analyzeBeanAttribute(instance, mbeanInfo, att, attValue);
 					standardAttributes.addAll(newAttributes);
 				} catch (Exception ex) {
-					ProbeLogger.logException(getClass(), ex, "Unable to get default Attribute from Beans");
+					//ProbeLogger.logException(getClass(), ex, "Unable to get default Attribute from Beans");
 				}
 			}
 		}
-		ProbeLogger.logInfo(getClass(), "Available Beans: " + standardAttributes.size());
+	}
+	
+	public void setBeanPreferences(LinkedList<Indicator> indicators) {
+		selectedAttributes = new LinkedList<BeanAttribute>();
+		if(indicators != null){
+			for(BeanAttribute bAtt : standardAttributes){
+				if(hasIndicator(indicators, bAtt.getAttName())) {
+					selectedAttributes.add(bAtt);
+				}
+			}
+		} else selectedAttributes = standardAttributes;
+	}
+	
+	public LinkedList<Indicator> getStandardAttributes() {
+		LinkedList<Indicator> indList = new LinkedList<Indicator>();
+		for(BeanAttribute bAtt : standardAttributes){
+			indList.add(Indicator.buildIndicator(bAtt.getAttName(), ProbeType.JVM));
+		}
+		return indList;
+	}
+	
+	private boolean hasIndicator(LinkedList<Indicator> indicators, String beanName){
+		if(indicators != null){
+			for(Indicator ind : indicators){
+				if(ind.matches(beanName))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public Indicator getIndicator(LinkedList<Indicator> indicators, String indName) {
+		if(indicators != null){
+			for(Indicator ind : indicators){
+				if(ind.matches(indName))
+					return ind;
+			}
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -127,44 +162,13 @@ public class BeanManager {
 		}
 		writer.close();
 	}
-	
-	public void loadBeanPreferences(String preferencesFilename) {
-		String readed = null;
-		BufferedReader reader = null;
-		selectedAttributes = new LinkedList<BeanAttribute>();
-		try {
-			reader = new BufferedReader(new FileReader(new File(preferencesFilename)));
-			while(reader.ready()){
-				readed = reader.readLine();
-				if(readed.length() > 0){
-					for(BeanAttribute bAtt : standardAttributes){
-						if(bAtt.getAttName().equals(readed)) {
-							selectedAttributes.add(bAtt);
-						}
-					}
-				}
-			}
-			reader.close();
-			standardAttributes.clear();
-			ProbeLogger.logInfo(getClass(), "Loaded Beans: " + selectedAttributes.size());
-		} catch (IOException ex) {
-			ProbeLogger.logException(getClass(), ex, "Unable to load Bean Preferences");
+
+	public HashMap<Indicator, String> getObservation(LinkedList<Indicator> indicators){
+		HashMap<Indicator, String> outMap = new HashMap<Indicator, String>();
+		for(BeanAttribute bAtt : selectedAttributes){
+			outMap.put(getIndicator(indicators, bAtt.getAttName()), bAtt.getAttValue(beanServer));
 		}
-		
+		return outMap;
 	}
 
-	public JSONObject getObservation(){
-		JSONObject jObj = new JSONObject();
-		JSONArray jArr = new JSONArray();
-		long startTime = System.currentTimeMillis();
-		jObj.put("time_ms", System.currentTimeMillis());
-		jObj.put("datetime", new Date().toString());
-		for(BeanAttribute bAtt : selectedAttributes){
-			jArr.add(bAtt.getJSONValue(beanServer));
-		}
-		jObj.put("processingTime_ms", (System.currentTimeMillis() - startTime));
-		jObj.put("observations", jArr);
-		return jObj;
-		
-	}
 }
