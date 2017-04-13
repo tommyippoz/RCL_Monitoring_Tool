@@ -4,12 +4,14 @@
 package ippoz.madness.lite.ui;
 
 import ippoz.madness.lite.experiment.ExperimentSetup;
+import ippoz.madness.lite.experiment.OutputType;
 import ippoz.madness.lite.experiment.runner.ShellExperiment;
 import ippoz.madness.lite.experiment.runner.TimingExperiment;
 import ippoz.madness.lite.support.MADneSsLiteSupport;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractButton;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -37,9 +40,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -51,12 +55,15 @@ public class MADneSsLiteUI {
 	private ExperimentSetup expSetup;
 	
 	private JFrame frame;
+	private JPanel pHeader;
+	private JPanel pSubHeader;
 	private JPanel pPreferences;
 	private JPanel pExperiments;
 	private JPanel pOutput;
 	private JPanel pFooter;
 	private File pFile;
 	
+	private JTextField txtExpName;
 	private JTextField txtOutputFolder;
 	private JTextField txtObsInterval;
 	private JLabel lblIndPrefFile;
@@ -98,7 +105,7 @@ public class MADneSsLiteUI {
 		setFooter();
 	}
 	
-	private void loadPreferencesFile(File selectedFile) {
+	public void loadPreferencesFile(File selectedFile) {
 		ExperimentSetup.generateDefaultIndicatorPreferences();
 		String errLog = expSetup.loadPreferencesFile(selectedFile, true);
 		if(errLog != null && errLog.length() > 0){
@@ -110,6 +117,10 @@ public class MADneSsLiteUI {
 	private void formReload(){
 		
 		// Preferences
+		if(expSetup.getExperimentName() != null){
+			txtExpName.setText(expSetup.getExperimentName());
+			txtExpName.setEnabled(true);
+		}
 		if(expSetup.getOutputFolder() != null){
 			txtOutputFolder.setText(expSetup.getOutputFolder());
 			txtOutputFolder.setEnabled(true);
@@ -169,22 +180,17 @@ public class MADneSsLiteUI {
 	}
 	
 	private void setHeader(){
-		pPreferences = new JPanel();
-		pPreferences.setBorder(new EmptyBorder(20, 20, 20, 20));
-		frame.getContentPane().add(pPreferences, BorderLayout.NORTH);
-		//pPreferences.setLayout(new BorderLayout(pPreferences, BoxLayout.Y_AXIS));
+		pHeader = new JPanel();
+		frame.getContentPane().add(pHeader, BorderLayout.NORTH);
+		pHeader.setLayout(new BoxLayout(pHeader, BoxLayout.Y_AXIS));
 		
 		JLabel lblOutput = new JLabel("RCL Monitoring Tool");
 		lblOutput.setFont(lblOutput.getFont().deriveFont(new Float(20)));
-		pPreferences.add(lblOutput, BorderLayout.CENTER);
+		lblOutput.setBorder(new EmptyBorder(20, 20, 20, 20));
+		pHeader.add(lblOutput);
 		
-	}
-
-	private void setPreferences(){
-		pPreferences = new JPanel();
-		pPreferences.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new TitledBorder("Preferences")));
-		frame.getContentPane().add(pPreferences, BorderLayout.WEST);
-		pPreferences.setLayout(new BoxLayout(pPreferences, BoxLayout.Y_AXIS));
+		pSubHeader = new JPanel();
+		pSubHeader.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new TitledBorder("Preferences")));
 		
 		JButton bResetPref = new JButton("Reset Preferences");
 		bResetPref.addActionListener(new ActionListener() { 
@@ -203,14 +209,11 @@ public class MADneSsLiteUI {
 			
 		});
 		
-		pPreferences.add(bResetPref);
+		pSubHeader.add(bResetPref);
 		
-		JPanel pLoadPreferences = new JPanel();
+		pSubHeader.add(Box.createRigidArea(new Dimension(100,0)));
 		
-		JLabel lblLoadPreferences = new JLabel("Existing Preferences");
-		pLoadPreferences.add(lblLoadPreferences);
-		
-		JButton bLoadPref = new JButton("Load");
+		JButton bLoadPref = new JButton("Load Existing Preferences");
 		bLoadPref.addActionListener(new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) { 
@@ -226,9 +229,72 @@ public class MADneSsLiteUI {
 			}
 			
 		});
-		pLoadPreferences.add(bLoadPref);
+		pSubHeader.add(bLoadPref);
 		
-		pPreferences.add(pLoadPreferences);
+		pSubHeader.add(Box.createRigidArea(new Dimension(100,0)));
+		
+		JButton bSavePref = new JButton("Save Preferences");
+		bSavePref.addActionListener(new ActionListener() { 
+			
+			public void actionPerformed(ActionEvent e) { 
+				if(pFile == null){
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+					fileChooser.setFileFilter(new FileNameExtensionFilter("Preferences Files", "preferences"));
+			        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			        	pFile = fileChooser.getSelectedFile();
+			        }
+				}
+				expSetup.writePreferences(pFile);
+			}
+			
+		});
+		
+		pSubHeader.add(bSavePref);
+		
+		pHeader.add(pSubHeader, BorderLayout.CENTER);
+		
+		
+	}
+
+	private void setPreferences(){
+		pPreferences = new JPanel();
+		pPreferences.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new TitledBorder("General")));
+		frame.getContentPane().add(pPreferences, BorderLayout.WEST);
+		pPreferences.setLayout(new BoxLayout(pPreferences, BoxLayout.Y_AXIS));
+		
+		JPanel pExpName = new JPanel();
+		
+		JLabel lblExpName = new JLabel("Experiment Name");
+		pExpName.add(lblExpName);
+		
+		txtExpName = new JTextField();
+		txtExpName.setText("");
+		txtExpName.setEnabled(true);
+		txtExpName.setColumns(15);
+		txtExpName.setMaximumSize(txtExpName.getPreferredSize());
+		txtExpName.getDocument().addDocumentListener(new DocumentListener() {
+			  
+			public void changedUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+			  
+			public void removeUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+			  
+			public void insertUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+ 
+			public void workOnUpdate() {
+			    expSetup.setExperimentName(txtExpName.getText());
+			}
+		});
+		
+		pExpName.add(lblExpName);
+		pExpName.add(txtExpName);
+		pPreferences.add(pExpName);
 		
 		JLabel lblOutFolder = new JLabel("Output Folder");
 		pPreferences.add(lblOutFolder);
@@ -514,18 +580,46 @@ public class MADneSsLiteUI {
 		ButtonGroup group = new ButtonGroup();
 		rdbtnSingleFile = new JRadioButton("Single File");
 		rdbtnSingleFile.setSelected(true);
+		rdbtnSingleFile.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent changEvent) {
+				AbstractButton aButton = (AbstractButton)changEvent.getSource();
+				if(aButton.getModel().isSelected()){
+					expSetup.setOutputType(OutputType.SINGLE_FILE);
+				}
+			}});
 		pOutput.add(rdbtnSingleFile);
 		group.add(rdbtnSingleFile);
 		
 		rdbtnFileForEachExp = new JRadioButton("File for Each Experiment");
+		rdbtnFileForEachExp.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent changEvent) {
+				AbstractButton aButton = (AbstractButton)changEvent.getSource();
+				if(aButton.getModel().isSelected()){
+					expSetup.setOutputType(OutputType.EACH_EXPERIMENT);
+				}
+			}});
 		pOutput.add(rdbtnFileForEachExp);
 		group.add(rdbtnFileForEachExp);
 		
 		rdbtnFileForEachInd = new JRadioButton("File for each Indicator");
+		rdbtnFileForEachInd.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent changEvent) {
+				AbstractButton aButton = (AbstractButton)changEvent.getSource();
+				if(aButton.getModel().isSelected()){
+					expSetup.setOutputType(OutputType.EACH_INDICATOR);
+				}
+			}});
 		pOutput.add(rdbtnFileForEachInd);
 		group.add(rdbtnFileForEachInd);
 		
 		rdbtnFileForEachIndExp = new JRadioButton("File for each indicator and experiment");
+		rdbtnFileForEachIndExp.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent changEvent) {
+				AbstractButton aButton = (AbstractButton)changEvent.getSource();
+				if(aButton.getModel().isSelected()){
+					expSetup.setOutputType(OutputType.EACH_EXPERIMENT_EACH_INDICATOR);
+				}
+			}});
 		pOutput.add(rdbtnFileForEachIndExp);
 		group.add(rdbtnFileForEachIndExp);
 		
@@ -586,9 +680,12 @@ public class MADneSsLiteUI {
 		        expSetup.setMailAddressFlag(abstractButton.getModel().isSelected());
 		        if(abstractButton.getModel().isSelected()){
 		        	txtInsertMailAddress.setEnabled(true);
+		        	chckbxZipResults.setSelected(true);
+		        	chckbxZipResults.setEnabled(false);
 		        } else {
 		        	txtInsertMailAddress.setEnabled(false);
 		        	txtInsertMailAddress.setText("Insert Mail Address");
+		        	chckbxZipResults.setEnabled(true);
 		        }
 		    }
 		
@@ -622,25 +719,6 @@ public class MADneSsLiteUI {
 		pFooter.setBorder(new EmptyBorder(20, 20, 20, 20));
 		frame.getContentPane().add(pFooter, BorderLayout.SOUTH);
 		pFooter.setLayout(new BoxLayout(pFooter, BoxLayout.Y_AXIS));
-		
-		JButton bSavePref = new JButton("Save Preferences");
-		bSavePref.addActionListener(new ActionListener() { 
-			
-			public void actionPerformed(ActionEvent e) { 
-				if(pFile == null){
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-					fileChooser.setFileFilter(new FileNameExtensionFilter("Preferences Files", "preferences"));
-			        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			        	pFile = fileChooser.getSelectedFile();
-			        }
-				}
-				expSetup.writePreferences(pFile);
-			}
-			
-		});
-		
-		pFooter.add(bSavePref);
 		
 		JButton bStartExp = new JButton("Start Experiments");
 		bStartExp.addActionListener(new ActionListener() { 

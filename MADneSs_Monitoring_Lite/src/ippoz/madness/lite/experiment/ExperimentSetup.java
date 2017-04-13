@@ -13,7 +13,9 @@ import ippoz.madness.lite.probes.ProbeType;
 import ippoz.madness.lite.support.AppLogger;
 import ippoz.madness.lite.support.AppUtility;
 import ippoz.madness.lite.support.MADneSsLiteSupport;
+import ippoz.madness.lite.support.MailUtils;
 import ippoz.madness.lite.support.PreferencesManager;
+import ippoz.madness.lite.support.ZipUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,7 +27,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.Observable;
+import java.util.TreeMap;
 
 /**
  * @author Tommy
@@ -33,6 +37,7 @@ import java.util.Observable;
  */
 public class ExperimentSetup extends Observable {
 	
+	private static final String pExpName = "EXPERIMENT_NAME";
 	private static final String pOutFolder = "OUTPUT_FOLDER";
 	private static final String pObsInterval = "OBSERVATION_INTERVAL";
 	private static final String pIndPreferences = "INDICATOR_PREFERENCES_FILE";
@@ -77,6 +82,12 @@ public class ExperimentSetup extends Observable {
 			pValue = pManager.getPreference(pTag); 
 			if(pValue != null && pValue.length() > 0){
 				switch(pTag){
+					case pExpName:
+						if(pValue.trim().length() > 0){
+							if(overwriteFlag || (!overwriteFlag && expName == null))
+								setExperimentName(pValue.trim());
+						} else errLog = errLog + pExpName + ": '" + pValue + "' is not a valid string\n";
+						break;
 					case pOutFolder:
 						if(MADneSsLiteSupport.isValidPath(pValue)){
 							if(overwriteFlag || (!overwriteFlag && outputFolder == null))
@@ -146,6 +157,18 @@ public class ExperimentSetup extends Observable {
 		notifyObservers();
 	}
 	
+	public void setExperimentName(String text) {
+		if(text.trim().length() > 0){
+			expName = text.trim();
+			setupChanged();
+		}
+	}
+	
+	public void setOutputType(OutputType oType) {
+		outputType = oType;
+		setupChanged();
+	}
+	
 	public void setOutputFolder(String text) {
 		if(text != null && text.trim().length() > 0)
 			outputFolder = text.trim();
@@ -197,7 +220,7 @@ public class ExperimentSetup extends Observable {
 	}
 
 	public boolean isPreferenceSetupCompleted() {
-		return outputFolder != null;
+		return expName != null && outputFolder != null && indMap != null;
 	}
 
 	public boolean isExperimentSetupCompleted() {
@@ -249,6 +272,10 @@ public class ExperimentSetup extends Observable {
 		try{
 			writer = new BufferedWriter(new FileWriter(pFile));
 			writer.write("* Preferences File for RCL Monitoring Tool\n");
+			writer.write("\n* Experiment Name\n");
+			if(expName != null){
+				writer.write(pExpName + " = " + expName + "\n");
+			}
 			writer.write("\n* Output Folder\n");
 			if(outputFolder != null){
 				writer.write(pOutFolder + " = " + outputFolder + "\n");
@@ -291,11 +318,13 @@ public class ExperimentSetup extends Observable {
 
 	public void runExperiment() {
 		Thread t;
+		LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData;
 		try {
 			if(eRunner != null){
 				if(obsInterval > 0){
 					eRunner.setObsInterval(obsInterval);
 				}
+				expData = new LinkedList<TreeMap<Date, HashMap<Indicator, String>>>();
 				AppLogger.logInfo(getClass(), "Executing " + experimentIterations + " experiments");
 				for(int i=0;i<experimentIterations;i++){
 					eRunner.setProbes(indMap);
@@ -303,50 +332,126 @@ public class ExperimentSetup extends Observable {
 					AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": STARTED");
 					t.start();
 					t.join();
-					AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": FINISHED");
-					AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": Stored " + storeData(i+1) + " Observations");
+					expData.add(eRunner.getMonitoredData());
+					AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": FINISHED (" + (eRunner.getMonitoredData() != null ? eRunner.getMonitoredData().size() : 0) + ")");
 					t = null;
 				}
-			} else AppLogger.logError(getClass(), "ExpRunnerError", "Experiment Runner is not set");
+				storeData(expData);
+				AppLogger.logInfo(getClass(), "Stored Data");
+			} else AppLogger.logError(getClass(), "ExperimentRunnerError", "Experiment Runner is not set");
 		} catch (InterruptedException ex) {
 			AppLogger.logException(getClass(), ex, "Error while running experiment");
 		}
-		
 	}
 
-	private int storeData(int i) {
-		String completeExpName = expName + "_" + i;
-		File mainDir = new File(outputFolder + "/" + completeExpName);
+	private void storeData(LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+		File mainDir = new File(outputFolder + "/" + expName);
 		mainDir.mkdirs();
-		if(eRunner.getMonitoredData() != null){
+		if(expData != null && expData.size() > 0){
 			switch(outputType){
 				case SINGLE_FILE:
-				case EACH_INDICATOR:
-				case EACH_EXPERIMENT:
-				case EACH_EXPERIMENT_EACH_INDICATOR:
-				default:
-					printSingleFile(mainDir, completeExpName);
+					printSingleFile(mainDir, expData);
 					break;
+				case EACH_INDICATOR:
+					printEachIndicatorFile(mainDir, expData);
+					break;
+				case EACH_EXPERIMENT:
+					printEachExperimentFile(mainDir, expData);
+					break;
+				case EACH_EXPERIMENT_EACH_INDICATOR:
+					printEachExperimentEachIndicatorFile(mainDir, expData);
+					break;
+				default:
+					AppLogger.logError(getClass(), "WrongEnumValue", "Unable to parse Output Type");
 			}
 		}
-		return eRunner.getMonitoredData() != null ? eRunner.getMonitoredData().size() : 0;
+		if(mailOutput && mailAddress != null){
+			sendMailOutputs(mainDir, zipFolder(mainDir));
+		} else if(zipOutput)
+			zipFolder(mainDir);
+	}
+	
+	private void sendMailOutputs(File mainDir, File zipFile) {
+		if(!MailUtils.sendMailSSL(mailAddress, zipFile))
+			AppLogger.logError(getClass(), "SendMailError", "Unable to send mail: SSL error");
 	}
 
-	private void printSingleFile(File mainDir, String completeExpName) {
+	private File zipFolder(File mainDir) {
+		return ZipUtils.zipFile(mainDir, mainDir.getPath() + ".zip");
+	}
+
+	private void printSingleFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+		int i;
 		File singleFile;
 		BufferedWriter writer;
 		try {
-			if(eRunner.getMonitoredData() != null && eRunner.getMonitoredData().size() > 0){
-				singleFile = new File(mainDir.getPath() + "/" + completeExpName + ".csv");
+			singleFile = new File(mainDir.getPath() + "/" + expName + ".csv");
+			writer = new BufferedWriter(new FileWriter(singleFile));
+			writer.write("expNumber,#,datetime,ms");
+			for(Indicator ind : expData.getFirst().firstEntry().getValue().keySet()){
+				writer.write("," + ind.getIndName());
+			}
+			writer.newLine();
+			for(int k=0;k<expData.size();k++){
+				i = 0;
+				for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
+					writer.write((k+1) + "," + (++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+					for(String value : mapEntry.getValue().values()){
+						writer.write("," + value);
+					}
+					writer.newLine();
+				}
+			}
+			writer.close();
+		} catch (IOException ex) {
+			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");
+		}
+	}
+	
+	private void printEachIndicatorFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+		int i;
+		File singleFile;
+		BufferedWriter writer;
+		try {
+			for(Indicator ind : expData.getFirst().firstEntry().getValue().keySet()){
+				i = 0;
+				singleFile = new File(mainDir.getPath() + "/" + expName + "_"+ ind.getIndName() + ".csv");
 				writer = new BufferedWriter(new FileWriter(singleFile));
-				writer.write("#,datetime");
-				for(Indicator ind : eRunner.getMonitoredData().getFirst().keySet()){
+				writer.write("expNumber,#,datetime,ms," + ind.getIndName());
+				writer.newLine();
+				for(int k=0;k<expData.size();k++){
+					for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
+						writer.write((k+1) + "," + (++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+						writer.write("," + mapEntry.getValue().get(ind));
+						writer.newLine();
+					}
+				}
+				writer.close();
+			}
+		} catch (IOException ex) {
+			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");
+		}
+	}
+
+	private void printEachExperimentFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+		int i;
+		File singleFile, subDir;
+		BufferedWriter writer;
+		try {
+			for(int k=0;k<expData.size();k++){
+				i = 0;
+				subDir = new File(mainDir.getPath() + "/" + expName + "_run_" + (k+1));
+				subDir.mkdir();
+				singleFile = new File(subDir.getPath() + "/" + expName + "_run_" + (k+1) + ".csv");
+				writer = new BufferedWriter(new FileWriter(singleFile));
+				writer.write("#,datetime,ms");
+				for(Indicator ind : expData.get(k).firstEntry().getValue().keySet()){
 					writer.write("," + ind.getIndName());
 				}
 				writer.newLine();
-				for(int i=0;i<eRunner.getMonitoredData().size();i++){
-					writer.write((i+1) + "," + new Date(eRunner.getStartTime().getTime() + i*eRunner.getObsInterval()).toString());
-					for(String value : eRunner.getMonitoredData().get(i).values()){
+				for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
+					writer.write((++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+					for(String value : mapEntry.getValue().values()){
 						writer.write("," + value);
 					}
 					writer.newLine();
@@ -354,7 +459,34 @@ public class ExperimentSetup extends Observable {
 				writer.close();
 			}
 		} catch (IOException ex) {
-			AppLogger.logException(getClass(), ex, "Unable to write output of experiment " + completeExpName);
+			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");
+		}
+	}
+	
+	private void printEachExperimentEachIndicatorFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+		int i;
+		File singleFile, subDir;
+		BufferedWriter writer;
+		try {
+			for(int k=0;k<expData.size();k++){
+				subDir = new File(mainDir.getPath() + "/" + expName + "_run_" + (k+1));
+				subDir.mkdir();
+				for(Indicator ind : expData.get(k).firstEntry().getValue().keySet()){
+					i = 0;
+					singleFile = new File(subDir.getPath() + "/" + expName + "_run_" + (k+1) + "_" + ind.getIndName() + ".csv");
+					writer = new BufferedWriter(new FileWriter(singleFile));
+					writer.write("#,datetime,ms," + ind.getIndName());
+					writer.newLine();
+					for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
+						writer.write((++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+						writer.write("," + mapEntry.getValue().get(ind));
+						writer.newLine();
+					}
+					writer.close();
+				}
+			}
+		} catch (IOException ex) {
+			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");
 		}
 	}
 
@@ -437,6 +569,10 @@ public class ExperimentSetup extends Observable {
 			}
 		}
 		return defaultInd;
+	}
+
+	public String getExperimentName() {
+		return expName;
 	}
 
 }

@@ -18,14 +18,13 @@ JVM
 * OperatingSystemImpl.SystemLoadAverage
 * OperatingSystemImpl.ObjectName.type
 * MemoryManagerImpl.Name
-* MemoryManagerImpl.Valid
 * MemoryManagerImpl.MemoryPoolNames#0
 * MemoryManagerImpl.MemoryPoolNames#1
+* MemoryManagerImpl.Valid
 * MemoryManagerImpl.ObjectName.name
 * MemoryManagerImpl.ObjectName.type
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.MemoryManagerNames#0
 * MemoryPoolImpl.PeakUsage.committed
 * MemoryPoolImpl.PeakUsage.init
@@ -40,6 +39,7 @@ JVM
 * MemoryPoolImpl.CollectionUsageThresholdSupported
 * MemoryPoolImpl.UsageThresholdExceeded
 * MemoryPoolImpl.UsageThresholdSupported
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * MBeanServerDelegate.MBeanServerId
@@ -51,7 +51,6 @@ JVM
 * MBeanServerDelegate.ImplementationVendor
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.CollectionUsage.committed
 * MemoryPoolImpl.CollectionUsage.init
 * MemoryPoolImpl.CollectionUsage.max
@@ -73,6 +72,7 @@ JVM
 * MemoryPoolImpl.CollectionUsageThresholdSupported
 * MemoryPoolImpl.UsageThresholdExceeded
 * MemoryPoolImpl.UsageThresholdSupported
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * ClassLoadingImpl.LoadedClassCount
@@ -154,9 +154,9 @@ JVM
 * GarbageCollectorImpl.CollectionCount
 * GarbageCollectorImpl.CollectionTime
 * GarbageCollectorImpl.Name
-* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.MemoryPoolNames#0
 * GarbageCollectorImpl.MemoryPoolNames#1
+* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.ObjectName.name
 * GarbageCollectorImpl.ObjectName.type
 * HotSpotDiagnostic.DiagnosticOptions.name#0
@@ -254,13 +254,12 @@ JVM
 * ThreadImpl.ThreadCpuTimeSupported
 * ThreadImpl.ObjectName.type
 * MemoryManagerImpl.Name
-* MemoryManagerImpl.Valid
 * MemoryManagerImpl.MemoryPoolNames#0
+* MemoryManagerImpl.Valid
 * MemoryManagerImpl.ObjectName.name
 * MemoryManagerImpl.ObjectName.type
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.CollectionUsage.committed
 * MemoryPoolImpl.CollectionUsage.init
 * MemoryPoolImpl.CollectionUsage.max
@@ -280,6 +279,7 @@ JVM
 * MemoryPoolImpl.CollectionUsageThresholdExceeded
 * MemoryPoolImpl.CollectionUsageThresholdSupported
 * MemoryPoolImpl.UsageThresholdSupported
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * ManagementFactoryHelper$1.Name
@@ -290,7 +290,6 @@ JVM
 * ManagementFactoryHelper$1.ObjectName.type
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.MemoryManagerNames#0
 * MemoryPoolImpl.PeakUsage.committed
 * MemoryPoolImpl.PeakUsage.init
@@ -305,11 +304,11 @@ JVM
 * MemoryPoolImpl.CollectionUsageThresholdSupported
 * MemoryPoolImpl.UsageThresholdExceeded
 * MemoryPoolImpl.UsageThresholdSupported
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.MemoryManagerNames#0
 * MemoryPoolImpl.PeakUsage.committed
 * MemoryPoolImpl.PeakUsage.init
@@ -324,6 +323,7 @@ JVM
 * MemoryPoolImpl.CollectionUsageThresholdSupported
 * MemoryPoolImpl.UsageThresholdExceeded
 * MemoryPoolImpl.UsageThresholdSupported
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * ManagementFactoryHelper$1.Name
@@ -334,7 +334,6 @@ JVM
 * ManagementFactoryHelper$1.ObjectName.type
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.CollectionUsage.committed
 * MemoryPoolImpl.CollectionUsage.init
 * MemoryPoolImpl.CollectionUsage.max
@@ -354,6 +353,7 @@ JVM
 * MemoryPoolImpl.CollectionUsageThresholdExceeded
 * MemoryPoolImpl.CollectionUsageThresholdSupported
 * MemoryPoolImpl.UsageThresholdSupported
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * ManagementFactoryHelper$PlatformLoggingImpl.ObjectName.type
@@ -406,12 +406,13 @@ JVM
 * GarbageCollectorImpl.CollectionCount
 * GarbageCollectorImpl.CollectionTime
 * GarbageCollectorImpl.Name
-* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.MemoryPoolNames#0
 * GarbageCollectorImpl.MemoryPoolNames#1
 * GarbageCollectorImpl.MemoryPoolNames#2
+* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.ObjectName.name
 * GarbageCollectorImpl.ObjectName.type
+* MemoryImpl.Verbose
 * MemoryImpl.HeapMemoryUsage.committed
 * MemoryImpl.HeapMemoryUsage.init
 * MemoryImpl.HeapMemoryUsage.max
@@ -421,9 +422,8 @@ JVM
 * MemoryImpl.NonHeapMemoryUsage.max
 * MemoryImpl.NonHeapMemoryUsage.used
 * MemoryImpl.ObjectPendingFinalizationCount
-* MemoryImpl.Verbose
 * MemoryImpl.ObjectName.type
 * CompilationImpl.Name
-* CompilationImpl.TotalCompilationTime
 * CompilationImpl.CompilationTimeMonitoringSupported
+* CompilationImpl.TotalCompilationTime
 * CompilationImpl.ObjectName.type

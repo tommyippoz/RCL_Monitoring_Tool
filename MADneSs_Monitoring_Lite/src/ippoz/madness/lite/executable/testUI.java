@@ -1,21 +1,22 @@
 package ippoz.madness.lite.executable;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.JRadioButton;
-import javax.swing.JLabel;
-import javax.swing.JTextPane;
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
-import java.awt.GridLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 public class testUI {
 

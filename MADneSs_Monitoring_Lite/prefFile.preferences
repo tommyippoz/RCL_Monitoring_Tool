@@ -1,10 +1,13 @@
 * Preferences File for RCL Monitoring Tool
 
+* Experiment Name
+EXPERIMENT_NAME = Puzzi
+
 * Output Folder
 OUTPUT_FOLDER = ./
 
 * Observation Interval
-OBSERVATION_INTERVAL = 500
+OBSERVATION_INTERVAL = 200
 
 * Indicator Preferences File
 INDICATOR_PREFERENCES_FILE = C:\Users\Tommy\git\MADneSs_Lite\MADneSs_Monitoring_Lite\selectedIndicators.preferences
@@ -16,9 +19,10 @@ TIMING_EXPERIMENT = 5
 EXPERIMENT_ITERATIONS = 2
 
 * Output Type
-OUTPUT_TYPE = SINGLE_FILE
+OUTPUT_TYPE = EACH_EXPERIMENT_EACH_INDICATOR
 
 * Zip Output
 OUTPUT_ZIP_FLAG = true
 
 * Mail Output
+OUTPUT_MAIL_ADDRESS = tommyippoz@gmail.com

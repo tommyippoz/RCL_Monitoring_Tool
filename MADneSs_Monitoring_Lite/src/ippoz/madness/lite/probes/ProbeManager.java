@@ -3,10 +3,10 @@
  */
 package ippoz.madness.lite.probes;
 
-import ippoz.madness.lite.support.AppLogger;
-
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 /**
  * @author Tommy
@@ -37,8 +37,8 @@ public class ProbeManager {
 		}
 	}
 	
-	public LinkedList<HashMap<Indicator, String>> getMonitoredData(){
-		LinkedList<HashMap<Indicator, String>> mData, partial;
+	public TreeMap<Date, HashMap<Indicator, String>> getMonitoredData(){
+		TreeMap<Date, HashMap<Indicator, String>> mData, partial;
 		if(probes == null || probes.size() == 0)
 			return null;
 		mData = probes.getFirst().getData();

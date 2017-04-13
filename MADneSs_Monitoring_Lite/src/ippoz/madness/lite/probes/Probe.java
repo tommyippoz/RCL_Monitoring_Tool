@@ -3,8 +3,10 @@
  */
 package ippoz.madness.lite.probes;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 /**
  * @author Tommy
@@ -15,7 +17,7 @@ public abstract class Probe implements Runnable {
 	private ProbeType probeLayer;
 	private String probeName;
 	private LinkedList<Indicator> indicators;
-	protected LinkedList<HashMap<Indicator, String>> data;
+	protected TreeMap<Date, HashMap<Indicator, String>> data;
 	private int obsDelay;
 
 	public Probe(ProbeType probeLayer, String probeName, LinkedList<Indicator> indicators) {
@@ -26,7 +28,7 @@ public abstract class Probe implements Runnable {
 		obsDelay = 1000;
 	}
 	
-	public LinkedList<HashMap<Indicator, String>> getData(){
+	public TreeMap<Date, HashMap<Indicator, String>> getData(){
 		return data;
 	}
 	

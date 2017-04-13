@@ -3,15 +3,16 @@
  */
 package ippoz.madness.lite.experiment.runner;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-
 import ippoz.madness.lite.probes.Indicator;
 import ippoz.madness.lite.probes.JVMProbe;
 import ippoz.madness.lite.probes.Probe;
 import ippoz.madness.lite.probes.ProbeManager;
 import ippoz.madness.lite.probes.ProbeType;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.TreeMap;
 
 /**
  * @author Tommy
@@ -58,7 +59,7 @@ public abstract class ExperimentRunner implements Runnable {
 		pManager.addProbe(probe);
 	}
 
-	public LinkedList<HashMap<Indicator, String>> getMonitoredData(){
+	public TreeMap<Date, HashMap<Indicator, String>> getMonitoredData(){
 		return pManager.getMonitoredData();
 	}
 	
@@ -70,10 +71,6 @@ public abstract class ExperimentRunner implements Runnable {
 		pManager.shutdownProbes();
 	}
 	
-	public void newExperiment(){
-		
-	}
-
 	protected abstract void runExperiment();
 
 	public abstract String getDetail();
