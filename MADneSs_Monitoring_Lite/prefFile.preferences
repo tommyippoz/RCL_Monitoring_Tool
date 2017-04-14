@@ -7,19 +7,19 @@ EXPERIMENT_NAME = Puzzi
 OUTPUT_FOLDER = ./
 
 * Observation Interval
-OBSERVATION_INTERVAL = 200
+OBSERVATION_INTERVAL = 1000
 
 * Indicator Preferences File
-INDICATOR_PREFERENCES_FILE = C:\Users\Tommy\git\MADneSs_Lite\MADneSs_Monitoring_Lite\selectedIndicators.preferences
+INDICATOR_PREFERENCES_FILE = /home/ippoz/git/MADneSs_Lite/MADneSs_Monitoring_Lite/selectedIndicators.preferences
 
 * Experiment Type Shell - Timing
-SHELL_EXPERIMENT = java -jar C:\Users\Tommy\Desktop\Th_Wait.jar
+TIMING_EXPERIMENT = 5
 
 * ExperimentIter
-EXPERIMENT_ITERATIONS = 2
+EXPERIMENT_ITERATIONS = 3
 
 * Output Type
-OUTPUT_TYPE = EACH_EXPERIMENT_EACH_INDICATOR
+OUTPUT_TYPE = SINGLE_FILE
 
 * Zip Output
 OUTPUT_ZIP_FLAG = true

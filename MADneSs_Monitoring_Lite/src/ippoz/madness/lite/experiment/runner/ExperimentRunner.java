@@ -75,6 +75,12 @@ public abstract class ExperimentRunner implements Runnable {
 	public void run() {
 		startTime = new Date();
 		pManager.startProbes();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		runExperiment();
 		pManager.shutdownProbes();
 	}

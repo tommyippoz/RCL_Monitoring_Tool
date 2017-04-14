@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -93,7 +94,7 @@ public class MADneSsLiteUI {
 		frame.setBackground(new Color(240, 240, 240));
 		frame.setTitle("RCL Monitoring Tool");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 1000, 600);
+		frame.setBounds(100, 100, 1200, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
@@ -329,38 +330,7 @@ public class MADneSsLiteUI {
 		pOutFolder.add(txtOutputFolder);
 		pPreferences.add(pOutFolder);
 		
-		JLabel lblObsInterval = new JLabel("Observation Interval");
-		pPreferences.add(lblObsInterval);
 		
-		txtObsInterval = new JTextField();
-		txtObsInterval.setText("");
-		txtObsInterval.setEnabled(true);
-		txtObsInterval.setColumns(5);
-		txtObsInterval.setMaximumSize(txtObsInterval.getPreferredSize());
-		txtObsInterval.getDocument().addDocumentListener(new DocumentListener() {
-			  
-			public void changedUpdate(DocumentEvent e) {
-				workOnUpdate();
-			}
-			  
-			public void removeUpdate(DocumentEvent e) {
-				workOnUpdate();
-			}
-			  
-			public void insertUpdate(DocumentEvent e) {
-				workOnUpdate();
-			}
- 
-			public void workOnUpdate() {
-				if(MADneSsLiteSupport.isInteger(txtObsInterval.getText()))
-					expSetup.setObservationInterval(Integer.parseInt(txtObsInterval.getText()));
-			}
-		});
-		
-		JPanel pObsInt = new JPanel();
-		pObsInt.add(lblObsInterval);
-		pObsInt.add(txtObsInterval);
-		pPreferences.add(pObsInt);
 		
 		JPanel pIndPreferences = new JPanel();
 		
@@ -519,6 +489,38 @@ public class MADneSsLiteUI {
 		
 		pExpTime.add(txtExpTime);
 		pExperiments.add(pExpTime);
+		
+		JLabel lblObsInterval = new JLabel("Observation Interval");
+		
+		txtObsInterval = new JTextField();
+		txtObsInterval.setText("");
+		txtObsInterval.setEnabled(true);
+		txtObsInterval.setColumns(5);
+		txtObsInterval.setMaximumSize(txtObsInterval.getPreferredSize());
+		txtObsInterval.getDocument().addDocumentListener(new DocumentListener() {
+			  
+			public void changedUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+			  
+			public void removeUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+			  
+			public void insertUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+ 
+			public void workOnUpdate() {
+				if(MADneSsLiteSupport.isInteger(txtObsInterval.getText()))
+					expSetup.setObservationInterval(Integer.parseInt(txtObsInterval.getText()));
+			}
+		});
+		
+		JPanel pObsInt = new JPanel();
+		pObsInt.add(lblObsInterval);
+		pObsInt.add(txtObsInterval);
+		pExperiments.add(pObsInt);
 		
 		JPanel pIterations = new JPanel();
 		

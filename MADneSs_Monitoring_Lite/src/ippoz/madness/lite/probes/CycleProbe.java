@@ -26,14 +26,20 @@ public abstract class CycleProbe extends Probe {
 	@Override
 	public void startProbe() {
 		long startTime;	 
+		HashMap<Indicator, String> partialData;
 		try {
 			data = new TreeMap<Date, HashMap<Indicator, String>>();
 			startTime = System.currentTimeMillis();
+			AppLogger.logInfo(getClass(), "Probe " + getProbeName() + " started");
 			while(!halt){
-			    data.put(new Date(startTime), readParams());
+				partialData = readParams();
+				if(partialData != null && partialData.size() > 0){
+					data.put(new Date(startTime), partialData);
+				} else AppLogger.logInfo(getClass(), getProbeName() + ": failed to read data at instant " + new Date(startTime).toString() );
 			    startTime = startTime + getObsDelay();
 			    Thread.sleep(startTime - System.currentTimeMillis());
 			}
+			AppLogger.logInfo(getClass(), "Probe " + getProbeName() + " shutdowned");
 		} catch (Exception ex) {
 			AppLogger.logException(getClass(), ex, "Error");
 		} 

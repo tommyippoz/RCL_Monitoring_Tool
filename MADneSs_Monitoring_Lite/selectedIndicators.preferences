@@ -26,3 +26,30 @@ OperatingSystemImpl.ProcessCpuTime
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.Valid
+
+UNIX_NETWORK
+Net_Received
+Net_Sent
+Tcp_Listen
+Tcp_Established
+Tcp_Syn
+Tcp_TimeWait
+Tcp_Close
+
+CENTOS
+MemFree
+Buffers
+Cached
+Active
+Inactive
+SwapFree
+nr_inactive_file
+nr_active_file
+pgpgin
+pgpgout
+pgalloc_dma
+pgfree
+pgactivate
+pgdeactivate
+pgfault
+pgmajfault

@@ -27,6 +27,10 @@ public class AppUtility {
 		return System.getProperty("os.name").toUpperCase().contains("WIN");
 	}
 	
+	public static boolean isLinux() {
+		return System.getProperty("os.name").toUpperCase().contains("LINUX");
+	}
+	
 	public static boolean isUNIX(){
 		return System.getProperty("os.name").toUpperCase().contains("UNIX");
 	}

@@ -6,6 +6,7 @@ package ippoz.madness.lite.probes;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -44,11 +45,23 @@ public class ProbeManager {
 		mData = probes.getFirst().getData();
 		for(int i=1;i<probes.size();i++){
 			partial = probes.get(i).getData();
-			for(int j=0;j<mData.size();j++){
-				mData.get(j).putAll(partial.get(j));
+			for(Date cDate : mData.keySet()) {
+				mData.get(cDate).putAll(partial.get(getClosestDate(cDate, partial.keySet())));
 			}
 		}
 		return mData;
+	}
+	
+	private Date getClosestDate(Date refDate, Set<Date> dateList){
+		Date closest = null;
+		long minDist = Long.MAX_VALUE;
+		for(Date d : dateList){
+			if(Math.abs(d.getTime() - refDate.getTime()) < minDist){
+				closest = d;
+				minDist = Math.abs(d.getTime() - refDate.getTime());
+			}
+		}
+		return closest;
 	}
 	
 }

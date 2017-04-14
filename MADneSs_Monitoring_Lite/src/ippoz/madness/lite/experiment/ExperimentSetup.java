@@ -355,6 +355,7 @@ public class ExperimentSetup extends Observable {
 							pBar.moveNext();
 							t = null;
 						}
+						Thread.sleep(500);
 						storeData(expData);
 						AppLogger.logInfo(getClass(), "Stored Data");
 						pBar.deleteFrame();
@@ -584,7 +585,7 @@ public class ExperimentSetup extends Observable {
 		for(Indicator ind : JVMProbe.listDefaultIndicatorNames()){
 			defaultInd.get(ProbeType.JVM).add(ind.getIndName());
 		}
-		if(AppUtility.isUNIX()){
+		if(AppUtility.isLinux()){
 			defaultInd.put(ProbeType.CENTOS, new LinkedList<String>());
 			for(String indName : CentOSProbe.listDefaultIndicatorNames()){
 				defaultInd.get(ProbeType.CENTOS).add(indName);
@@ -593,6 +594,10 @@ public class ExperimentSetup extends Observable {
 			for(String indName : UnixNetworkProbe.listDefaultIndicatorNames()){
 				defaultInd.get(ProbeType.UNIX_NETWORK).add(indName);
 			}
+		} else if(AppUtility.isUNIX()){
+			// TODO
+		} else if(AppUtility.isWindows()){
+			// TODO
 		}
 		return defaultInd;
 	}
