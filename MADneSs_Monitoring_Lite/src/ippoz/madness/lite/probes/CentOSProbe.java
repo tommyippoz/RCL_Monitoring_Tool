@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class CentOSProbe extends CycleProbe {
 	
-	public CentOSProbe(HashMap<String, String> involvedAttributes, LinkedList<Indicator> indicators) {
+	public CentOSProbe(LinkedList<Indicator> indicators) {
 		super(ProbeType.CENTOS, "CentOS", indicators);
 	}
 
@@ -105,13 +105,17 @@ public class CentOSProbe extends CycleProbe {
 
 	@Override
 	public LinkedList<Indicator> setDefaultIndicators() {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<Indicator> defaultList = new LinkedList<Indicator>();
+		for(String indName : listDefaultIndicatorNames()){
+			defaultList.add(Indicator.buildIndicator(indName, ProbeType.CENTOS));
+		}
+		return defaultList;
 	}
 
 	public static String[] listDefaultIndicatorNames() {
-		return new String[]{"CPU User Processes", "CPU Niced Processes", "CPU Kernel Processes", 
-				"CPU Idle Processes", "CPU I/O Wait Processes", "CPU Interrupts", "CPU Soft Interrupts"};
+		return new String[]{"MemFree", "Buffers", "Cached", "Active", "Inactive", "SwapFree", 
+				"nr_inactive_file", "nr_active_file", "pgpgin", "pgpgout", "pgalloc_dma", 
+				"pgfree", "pgactivate", "pgdeactivate", "pgfault", "pgmajfault"};
 	}
 	
 }

@@ -71,8 +71,16 @@ public class UnixNetworkProbe extends IteratingCommandProbe {
 
 	@Override
 	public LinkedList<Indicator> setDefaultIndicators() {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<Indicator> defaultList = new LinkedList<Indicator>();
+		for(String indName : listDefaultIndicatorNames()){
+			defaultList.add(Indicator.buildIndicator(indName, ProbeType.UNIX_NETWORK));
+		}
+		return defaultList;
+	}
+
+	public static String[] listDefaultIndicatorNames() {
+		return new String[]{"Net_Received", "Net_Sent", "Tcp_Listen", "Tcp_Established",
+				"Tcp_Syn", "Tcp_TimeWait", "Tcp_Close"};
 	}	
 
 }

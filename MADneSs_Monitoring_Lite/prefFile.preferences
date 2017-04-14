@@ -13,7 +13,7 @@ OBSERVATION_INTERVAL = 200
 INDICATOR_PREFERENCES_FILE = C:\Users\Tommy\git\MADneSs_Lite\MADneSs_Monitoring_Lite\selectedIndicators.preferences
 
 * Experiment Type Shell - Timing
-TIMING_EXPERIMENT = 5
+SHELL_EXPERIMENT = java -jar C:\Users\Tommy\Desktop\Th_Wait.jar
 
 * ExperimentIter
 EXPERIMENT_ITERATIONS = 2
@@ -25,4 +25,3 @@ OUTPUT_TYPE = EACH_EXPERIMENT_EACH_INDICATOR
 OUTPUT_ZIP_FLAG = true
 
 * Mail Output
-OUTPUT_MAIL_ADDRESS = tommyippoz@gmail.com

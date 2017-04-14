@@ -10,12 +10,14 @@ import ippoz.madness.lite.probes.CentOSProbe;
 import ippoz.madness.lite.probes.Indicator;
 import ippoz.madness.lite.probes.JVMProbe;
 import ippoz.madness.lite.probes.ProbeType;
+import ippoz.madness.lite.probes.UnixNetworkProbe;
 import ippoz.madness.lite.support.AppLogger;
 import ippoz.madness.lite.support.AppUtility;
 import ippoz.madness.lite.support.MADneSsLiteSupport;
 import ippoz.madness.lite.support.MailUtils;
 import ippoz.madness.lite.support.PreferencesManager;
 import ippoz.madness.lite.support.ZipUtils;
+import ippoz.madness.lite.ui.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -107,6 +109,10 @@ public class ExperimentSetup extends Observable {
 						} else errLog = errLog + pIndPreferences + ": '" + pValue + "' is not a valid file\n";
 						break;
 					case pShellExp:
+						if(MADneSsLiteSupport.isValidShellCommand(pValue)){
+							if(overwriteFlag || (!overwriteFlag && eRunner != null))
+								eRunner = new ShellExperiment(pValue);
+						} else errLog = errLog + pShellExp + ": '" + pValue + "' is not a valid shell command\n";
 						break;
 					case pTimingExp:
 						if(MADneSsLiteSupport.isInteger(pValue) && Integer.parseInt(pValue) > 0){
@@ -201,8 +207,10 @@ public class ExperimentSetup extends Observable {
 	}
 
 	public void setShellExperiment(String shellCommand) {
-		// TODO Auto-generated method stub
-		
+		if(MADneSsLiteSupport.isValidShellCommand(shellCommand)){
+			eRunner = new ShellExperiment(shellCommand);
+			setupChanged();
+		}
 	}
 
 	public void setTimingExperiment(int expDuration) {
@@ -316,32 +324,46 @@ public class ExperimentSetup extends Observable {
 		}
 	}
 
-	public void runExperiment() {
-		Thread t;
-		LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData;
-		try {
-			if(eRunner != null){
-				if(obsInterval > 0){
-					eRunner.setObsInterval(obsInterval);
+	private ProgressBar pBar;
+	
+	public void runExperiment(ProgressBar pb) {
+		pBar = pb;
+		if(eRunner != null){
+			if(obsInterval > 0){
+				eRunner.setObsInterval(obsInterval);
+			}
+			AppLogger.logInfo(getClass(), "Executing " + experimentIterations + " experiments");
+			new Thread(new Runnable() {
+				public void run() {
+					pBar.showBar();
 				}
-				expData = new LinkedList<TreeMap<Date, HashMap<Indicator, String>>>();
-				AppLogger.logInfo(getClass(), "Executing " + experimentIterations + " experiments");
-				for(int i=0;i<experimentIterations;i++){
-					eRunner.setProbes(indMap);
-					t = new Thread(eRunner);
-					AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": STARTED");
-					t.start();
-					t.join();
-					expData.add(eRunner.getMonitoredData());
-					AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": FINISHED (" + (eRunner.getMonitoredData() != null ? eRunner.getMonitoredData().size() : 0) + ")");
-					t = null;
+			}).start();
+			new Thread(new Runnable() {
+				public void run() {
+					Thread t;
+					LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData;
+					try {
+						expData = new LinkedList<TreeMap<Date, HashMap<Indicator, String>>>();
+						for(int i=0;i<experimentIterations;i++){
+							eRunner.setProbes(indMap);
+							t = new Thread(eRunner);
+							AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": STARTED");
+							t.start();
+							t.join();
+							expData.add(eRunner.getMonitoredData());
+							AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": FINISHED (" + (eRunner.getMonitoredData() != null ? eRunner.getMonitoredData().size() : 0) + ")");
+							pBar.moveNext();
+							t = null;
+						}
+						storeData(expData);
+						AppLogger.logInfo(getClass(), "Stored Data");
+						pBar.deleteFrame();
+					} catch (InterruptedException ex) {
+						AppLogger.logException(getClass(), ex, "Error while running experiment");
+					}
 				}
-				storeData(expData);
-				AppLogger.logInfo(getClass(), "Stored Data");
-			} else AppLogger.logError(getClass(), "ExperimentRunnerError", "Experiment Runner is not set");
-		} catch (InterruptedException ex) {
-			AppLogger.logException(getClass(), ex, "Error while running experiment");
-		}
+			}).start();
+		} else AppLogger.logError(getClass(), "ExperimentRunnerError", "Experiment Runner is not set"); 
 	}
 
 	private void storeData(LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
@@ -566,6 +588,10 @@ public class ExperimentSetup extends Observable {
 			defaultInd.put(ProbeType.CENTOS, new LinkedList<String>());
 			for(String indName : CentOSProbe.listDefaultIndicatorNames()){
 				defaultInd.get(ProbeType.CENTOS).add(indName);
+			}
+			defaultInd.put(ProbeType.UNIX_NETWORK, new LinkedList<String>());
+			for(String indName : UnixNetworkProbe.listDefaultIndicatorNames()){
+				defaultInd.get(ProbeType.UNIX_NETWORK).add(indName);
 			}
 		}
 		return defaultInd;

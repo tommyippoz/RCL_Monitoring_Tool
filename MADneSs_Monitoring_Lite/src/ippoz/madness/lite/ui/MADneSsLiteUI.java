@@ -140,6 +140,7 @@ public class MADneSsLiteUI {
 				txtShellCommand.setText(expSetup.getExperimentRunner().getDetail());
 				txtShellCommand.setEnabled(true);
 				txtExpTime.setEnabled(false);
+				
 			} else if(expSetup.getExperimentRunner() instanceof TimingExperiment){
 				rdbtnTime.setSelected(true);
 				txtExpTime.setText(expSetup.getExperimentRunner().getDetail());
@@ -422,6 +423,7 @@ public class MADneSsLiteUI {
 	        public void actionPerformed(ActionEvent e) {
 	        	txtShellCommand.setEnabled(true);
 	        	txtExpTime.setEnabled(false);
+	        	txtExpTime.setText("-- not set --");
 	        }
 	    });
 		rdbtnShell.setSelected(true);
@@ -437,13 +439,29 @@ public class MADneSsLiteUI {
 			}
 
 	        public void focusLost(FocusEvent e) {
-	        	if (MADneSsLiteSupport.isValidShellCommand(txtShellCommand.getText())){
-	        		expSetup.setShellExperiment(txtShellCommand.getText());
-	        		txtIterations.setEnabled(false);
-	        	} else {
-	        		txtShellCommand.setText("Shell Command");
-	        	}
+	        	
 	        }
+		});
+		txtShellCommand.getDocument().addDocumentListener(new DocumentListener() {
+			  
+			public void changedUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+			  
+			public void removeUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+			  
+			public void insertUpdate(DocumentEvent e) {
+				workOnUpdate();
+			}
+
+			public void workOnUpdate() {
+				if (MADneSsLiteSupport.isValidShellCommand(txtShellCommand.getText())){
+	        		expSetup.setShellExperiment(txtShellCommand.getText());
+	        		txtIterations.setEnabled(true);
+	        	}
+			}
 		});
 		
 		pExperiments.add(txtShellCommand);
@@ -455,6 +473,7 @@ public class MADneSsLiteUI {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	        	txtShellCommand.setEnabled(false);
+	        	txtShellCommand.setText("-- not set --");
 	        	txtExpTime.setEnabled(true);
 	        }
 	    });
@@ -471,12 +490,7 @@ public class MADneSsLiteUI {
 			}
 
 	        public void focusLost(FocusEvent e) {
-	        	if (MADneSsLiteSupport.isInteger(txtExpTime.getText())){
-	        		expSetup.setTimingExperiment(Integer.parseInt(txtExpTime.getText()));
-	        		txtIterations.setEnabled(true);
-	        	} else {
-	        		txtExpTime.setText("Experiment Time (s)");
-	        	}
+	        	
 	        }
 		});
 		txtExpTime.getDocument().addDocumentListener(new DocumentListener() {
@@ -724,7 +738,8 @@ public class MADneSsLiteUI {
 		bStartExp.addActionListener(new ActionListener() { 
 			
 			public void actionPerformed(ActionEvent e) { 
-				expSetup.runExperiment();
+				ProgressBar pBar = new ProgressBar(frame, "Experiments Progress", 0, expSetup.getExperimentIterations());
+				expSetup.runExperiment(pBar);
 			}
 			
 		});

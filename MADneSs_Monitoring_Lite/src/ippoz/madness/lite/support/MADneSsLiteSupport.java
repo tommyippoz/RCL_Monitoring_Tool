@@ -24,8 +24,7 @@ public class MADneSsLiteSupport {
 	}
 
 	public static boolean isValidShellCommand(String text) {
-		// TODO Auto-generated method stub
-		return true;
+		return text != null && text.trim().length() > 0;
 	}
 
 	public static boolean isInteger(String text) {

@@ -31,6 +31,25 @@ public class AppUtility {
 		return System.getProperty("os.name").toUpperCase().contains("UNIX");
 	}
 	
+	public static String runProcess(String procCommand, boolean waitFor){
+		Process p;
+		String output = ""; 
+		BufferedReader reader;
+		try { 
+            p = Runtime.getRuntime().exec(procCommand); 
+            if(waitFor){
+            	p.waitFor();
+            }
+            reader = new BufferedReader(new InputStreamReader(p.getInputStream())); 
+            while(reader.ready()) { 
+                output = output + reader.readLine();
+            }
+        } catch(Exception ex) {
+        	AppLogger.logException(AppUtility.class, ex, "Unable to run '" + procCommand + "' command");
+        } 
+        return output;
+	}
+	
 	public static LinkedList<String> runScriptInto(String path, String args, boolean setOnFolder) throws IOException {
 		Process p;
 		LinkedList<String> outList = new LinkedList<String>();
