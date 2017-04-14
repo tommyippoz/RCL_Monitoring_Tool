@@ -1,14 +1,22 @@
-Apr 13, 2017 4:18:45 PM ippoz.madness.lite.support.AppLogger log
+Apr 14, 2017 12:09:14 PM ippoz.madness.lite.support.AppLogger log
 INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Executing 2 experiments
-Apr 13, 2017 4:18:46 PM ippoz.madness.lite.support.AppLogger log
-INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 1: STARTED
-Apr 13, 2017 4:18:51 PM ippoz.madness.lite.support.AppLogger log
-INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 1: FINISHED (25)
-Apr 13, 2017 4:18:51 PM ippoz.madness.lite.support.AppLogger log
-INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 2: STARTED
-Apr 13, 2017 4:18:56 PM ippoz.madness.lite.support.AppLogger log
-INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Experiment 2: FINISHED (25)
-Apr 13, 2017 4:18:56 PM ippoz.madness.lite.support.AppLogger log
+Apr 14, 2017 12:09:14 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup$2] Experiment 1: STARTED
+Apr 14, 2017 12:09:20 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.runner.ShellExperiment] StartEnd
+Apr 14, 2017 12:09:20 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.runner.ShellExperiment] Command executed for 5188 ms
+Apr 14, 2017 12:09:20 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup$2] Experiment 1: FINISHED (26)
+Apr 14, 2017 12:09:20 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup$2] Experiment 2: STARTED
+Apr 14, 2017 12:09:25 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.runner.ShellExperiment] StartEnd
+Apr 14, 2017 12:09:25 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.runner.ShellExperiment] Command executed for 5130 ms
+Apr 14, 2017 12:09:25 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup$2] Experiment 2: FINISHED (26)
+Apr 14, 2017 12:09:25 PM ippoz.madness.lite.support.AppLogger log
 INFO: [Info][ippoz.madness.lite.support.ZipUtils] Zipping Completed
-Apr 13, 2017 4:18:59 PM ippoz.madness.lite.support.AppLogger log
-INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup] Stored Data
+Apr 14, 2017 12:09:25 PM ippoz.madness.lite.support.AppLogger log
+INFO: [Info][ippoz.madness.lite.experiment.ExperimentSetup$2] Stored Data
