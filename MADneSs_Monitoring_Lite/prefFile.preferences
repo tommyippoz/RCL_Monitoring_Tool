@@ -7,7 +7,7 @@ EXPERIMENT_NAME = Puzzi
 OUTPUT_FOLDER = ./
 
 * Observation Interval
-OBSERVATION_INTERVAL = 1000
+OBSERVATION_INTERVAL = 100
 
 * Indicator Preferences File
 INDICATOR_PREFERENCES_FILE = /home/ippoz/git/MADneSs_Lite/MADneSs_Monitoring_Lite/selectedIndicators.preferences

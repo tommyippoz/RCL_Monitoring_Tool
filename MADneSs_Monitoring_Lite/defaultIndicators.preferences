@@ -37,8 +37,8 @@ JVM
 * OperatingSystemImpl.TotalPhysicalMemorySize
 * OperatingSystemImpl.SystemCpuLoad
 * OperatingSystemImpl.ProcessCpuLoad
-* OperatingSystemImpl.Version
 * OperatingSystemImpl.AvailableProcessors
+* OperatingSystemImpl.Version
 * OperatingSystemImpl.Arch
 * OperatingSystemImpl.SystemLoadAverage
 * OperatingSystemImpl.Name
@@ -112,7 +112,6 @@ JVM
 * ClassLoadingImpl.UnloadedClassCount
 * ClassLoadingImpl.Verbose
 * ClassLoadingImpl.ObjectName.type
-* RuntimeImpl.StartTime
 * RuntimeImpl.BootClassPathSupported
 * RuntimeImpl.VmName
 * RuntimeImpl.VmVendor
@@ -120,6 +119,7 @@ JVM
 * RuntimeImpl.LibraryPath
 * RuntimeImpl.BootClassPath
 * RuntimeImpl.Uptime
+* RuntimeImpl.StartTime
 * RuntimeImpl.SpecName
 * RuntimeImpl.SpecVendor
 * RuntimeImpl.SpecVersion
@@ -286,9 +286,9 @@ JVM
 * MemoryManagerImpl.Name
 * MemoryManagerImpl.ObjectName.name
 * MemoryManagerImpl.ObjectName.type
-* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.TotalCapacity
 * ManagementFactoryHelper$1.MemoryUsed
+* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.Name
 * ManagementFactoryHelper$1.ObjectName.name
 * ManagementFactoryHelper$1.ObjectName.type
@@ -330,9 +330,9 @@ JVM
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
-* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.TotalCapacity
 * ManagementFactoryHelper$1.MemoryUsed
+* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.Name
 * ManagementFactoryHelper$1.ObjectName.name
 * ManagementFactoryHelper$1.ObjectName.type
@@ -473,8 +473,8 @@ JVM
 * MemoryImpl.NonHeapMemoryUsage.used
 * MemoryImpl.Verbose
 * MemoryImpl.ObjectName.type
-* CompilationImpl.TotalCompilationTime
 * CompilationImpl.CompilationTimeMonitoringSupported
+* CompilationImpl.TotalCompilationTime
 * CompilationImpl.Name
 * CompilationImpl.ObjectName.type
 

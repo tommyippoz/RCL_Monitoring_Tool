@@ -3,8 +3,6 @@
  */
 package ippoz.madness.lite.probes;
 
-import ippoz.madness.lite.support.AppLogger;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;

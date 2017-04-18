@@ -4,7 +4,6 @@
 package ippoz.madness.lite.probes;
 
 import ippoz.madness.lite.support.AppLogger;
-import ippoz.madness.lite.support.AppUtility;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

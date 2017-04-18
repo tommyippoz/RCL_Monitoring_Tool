@@ -37,7 +37,9 @@ public abstract class CycleProbe extends Probe {
 					data.put(new Date(startTime), partialData);
 				} else AppLogger.logInfo(getClass(), getProbeName() + ": failed to read data at instant " + new Date(startTime).toString() );
 			    startTime = startTime + getObsDelay();
-			    Thread.sleep(startTime - System.currentTimeMillis());
+			    if(startTime - System.currentTimeMillis() > 0) {
+			    	Thread.sleep(startTime - System.currentTimeMillis());
+			    } else AppLogger.logError(getClass(), "ThreadSleepTime", "Observation delay is low. Unable to process data before next observation is read.");
 			}
 			AppLogger.logInfo(getClass(), "Probe " + getProbeName() + " shutdowned");
 		} catch (Exception ex) {
