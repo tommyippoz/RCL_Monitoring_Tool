@@ -3,6 +3,8 @@
  */
 package ippoz.madness.lite.probes;
 
+import ippoz.madness.lite.support.MADneSsLiteSupport;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -43,18 +45,24 @@ public class UnixNetworkProbe extends IteratingCommandProbe {
 
 	@Override
 	protected HashMap<Indicator, String> readParams() {
-		String tokenName;
+		String tokenName, next;
 		HashMap<Indicator, String> params = new HashMap<Indicator, String>();
 		Iterator<String> keyIt = paramNames.keySet().iterator();
-		synchronized(lastReaded){
-			StringTokenizer lt = new StringTokenizer(lastReaded.replace("|", ""));
-			while(lt.hasMoreTokens()){
-				tokenName = paramNames.get(keyIt.next());
-				if(hasIndicator(tokenName)){
-					params.put(getIndicator(tokenName), parseQuantity(lt.nextToken()));
-				} else lt.nextToken();
+		try {
+			synchronized(lastReaded){
+				StringTokenizer lt = new StringTokenizer(lastReaded.replaceAll("|", ""));
+				while(lt.hasMoreTokens()){
+					tokenName = paramNames.get(keyIt.next());
+					if(hasIndicator(tokenName)){
+						next = null;
+						while(lt.hasMoreTokens() && (next == null || !MADneSsLiteSupport.isInteger(next))){
+							next = lt.nextToken();
+						}
+						params.put(getIndicator(tokenName), parseQuantity(next));
+					} else lt.nextToken();
+				}
 			}
-		}
+		} catch(Exception ex){}
 		return params;
 	}
 

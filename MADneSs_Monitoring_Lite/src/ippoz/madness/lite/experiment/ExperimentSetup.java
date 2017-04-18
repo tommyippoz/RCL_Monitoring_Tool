@@ -355,6 +355,7 @@ public class ExperimentSetup extends Observable {
 							pBar.moveNext();
 							t = null;
 						}
+						Thread.sleep(500);
 						storeData(expData);
 						AppLogger.logInfo(getClass(), "Stored Data");
 						pBar.deleteFrame();
@@ -368,6 +369,8 @@ public class ExperimentSetup extends Observable {
 
 	private void storeData(LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
 		File mainDir = new File(outputFolder + "/" + expName);
+		if(mainDir.exists())
+			mainDir.delete();
 		mainDir.mkdirs();
 		if(expData != null && expData.size() > 0){
 			switch(outputType){
@@ -528,16 +531,20 @@ public class ExperimentSetup extends Observable {
 						try {
 							ProbeType.valueOf(readed);
 							currentType = ProbeType.valueOf(readed);
-							indMap.put(currentType, new LinkedList<Indicator>());
+							if(canBeInstrumentedWith(currentType)){
+								indMap.put(currentType, new LinkedList<Indicator>());
+							} else AppLogger.logError(getClass(), "IndicatorLayerError", "Unable to instrument layer " + currentType + " on this machine");
 						} catch(Exception ex){
 							if(currentType != null){
-								indMap.get(currentType).add(Indicator.buildIndicator(readed, currentType));
+								if(canBeInstrumentedWith(currentType)){
+									indMap.get(currentType).add(Indicator.buildIndicator(readed, currentType));
+								}
 							} else AppLogger.logError(getClass(), "IndicatorDefinitionError", "Unable to fetch layer of indicator '" + readed + "'");
 						}
 					}
 				}
 				reader.close();
-				setChanged();
+				setupChanged();
 			}
 		} catch (IOException ex) {
 			AppLogger.logException(getClass(), ex, "Unable to load Indicator preferences");
@@ -580,21 +587,38 @@ public class ExperimentSetup extends Observable {
 	
 	private static HashMap<ProbeType, LinkedList<String>> buildDefaultMap(){
 		HashMap<ProbeType, LinkedList<String>> defaultInd = new HashMap<ProbeType, LinkedList<String>>();
-		defaultInd.put(ProbeType.JVM, new LinkedList<String>());
-		for(Indicator ind : JVMProbe.listDefaultIndicatorNames()){
-			defaultInd.get(ProbeType.JVM).add(ind.getIndName());
+		if(canBeInstrumentedWith(ProbeType.JVM)){
+			defaultInd.put(ProbeType.JVM, new LinkedList<String>());
+			for(Indicator ind : JVMProbe.listDefaultIndicatorNames()){
+				defaultInd.get(ProbeType.JVM).add(ind.getIndName());
+			}
 		}
-		if(AppUtility.isUNIX()){
+		if(canBeInstrumentedWith(ProbeType.CENTOS)){
 			defaultInd.put(ProbeType.CENTOS, new LinkedList<String>());
 			for(String indName : CentOSProbe.listDefaultIndicatorNames()){
 				defaultInd.get(ProbeType.CENTOS).add(indName);
 			}
+		}
+		if(canBeInstrumentedWith(ProbeType.UNIX_NETWORK)){
 			defaultInd.put(ProbeType.UNIX_NETWORK, new LinkedList<String>());
 			for(String indName : UnixNetworkProbe.listDefaultIndicatorNames()){
 				defaultInd.get(ProbeType.UNIX_NETWORK).add(indName);
 			}
 		}
 		return defaultInd;
+	}
+	
+	private static boolean canBeInstrumentedWith(ProbeType pt){
+		switch(pt){
+			case JVM:
+				return true;
+			case CENTOS:
+				return AppUtility.isLinux() || AppUtility.isUNIX();
+			case UNIX_NETWORK:
+				return AppUtility.isLinux() || AppUtility.isUNIX();
+			default: 
+				return false;
+		}
 	}
 
 	public String getExperimentName() {

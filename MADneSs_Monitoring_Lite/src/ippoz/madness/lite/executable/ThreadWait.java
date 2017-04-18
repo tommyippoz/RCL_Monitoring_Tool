@@ -3,7 +3,6 @@
  */
 package ippoz.madness.lite.executable;
 
-import java.awt.EventQueue;
 
 /**
  * @author Tommy

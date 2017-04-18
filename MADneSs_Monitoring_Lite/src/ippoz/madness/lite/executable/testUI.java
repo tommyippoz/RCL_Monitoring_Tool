@@ -4,29 +4,16 @@ import ippoz.madness.lite.ui.ProgressBar;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class testUI {
 
 	private JFrame frmRclMonitoringTool;
-	private JTextField txtInsertMailAddress;
 
 	/**
 	 * Launch the application.
