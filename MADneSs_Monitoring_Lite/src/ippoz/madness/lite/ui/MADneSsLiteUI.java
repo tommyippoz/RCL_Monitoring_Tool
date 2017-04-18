@@ -94,12 +94,12 @@ public class MADneSsLiteUI {
 	
 	private void setFrame(){
 		frame = new JFrame();
-		frame.setBackground(new Color(240, 240, 240));
 		frame.setTitle("RCL Monitoring Tool");
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 1200, 550);
+		frame.getContentPane().setBackground(Color.WHITE);
+		frame.setBounds(100, 100, 1200, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setIconImage(new ImageIcon("images/picOK.jpg").getImage());
+		frame.setIconImage(new ImageIcon("images/RCL_Logo_Small.png").getImage());
 	}
 	
 	private void buildUI(){
@@ -363,6 +363,7 @@ public class MADneSsLiteUI {
 		        returnValue = fileChooser.showOpenDialog(null);
 		        if (returnValue == JFileChooser.APPROVE_OPTION) {
 		        	expSetup.loadIndicatorPreferences(fileChooser.getSelectedFile());
+		        	formReload();
 		        }
 			}
 			
@@ -420,7 +421,7 @@ public class MADneSsLiteUI {
 		pShComd.add(rdbtnShell);
 		
 		txtShellCommand.setText("Shell Command");
-		txtShellCommand.setMaximumSize(txtShellCommand.getPreferredSize());
+		txtShellCommand.setColumns(20);
 		txtShellCommand.addFocusListener(new FocusListener() {
 		      
 			public void focusGained(FocusEvent e) { 
@@ -851,20 +852,12 @@ public class MADneSsLiteUI {
 		private JDialog dialog;
 
         public TextBoxListener(String text) {
-        	JOptionPane oPanel = new JOptionPane(text, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
-            dialog = new JDialog(frame, true);
-            
-            //dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        	//dialog = oPanel.createDialog("Title");
-            
+        	dialog = new JDialog(frame, true);
             dialog.setUndecorated(true);
             dialog.setResizable(false);
             dialog.setModal(false);
-            
             dialog.add(new JLabel(text));
-            
             dialog.pack();
-            
         }
 
         @Override
@@ -872,12 +865,8 @@ public class MADneSsLiteUI {
             Component c = (Component)me.getSource();
             int x = c.getLocationOnScreen().x + (c.getWidth()/2);
             int y = c.getLocationOnScreen().y + c.getHeight();
-
             dialog.setLocation(x,y);
-            
             dialog.setVisible(true);
-            
-            //JOptionPane.showMessageDialog(frame, dialog);
         }
 
         @Override
