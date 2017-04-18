@@ -4,13 +4,13 @@
 EXPERIMENT_NAME = Puzzi
 
 * Output Folder
-OUTPUT_FOLDER = ./
+OUTPUT_FOLDER = ../../git_data/RCL
 
 * Observation Interval
 OBSERVATION_INTERVAL = 200
 
 * Indicator Preferences File
-INDICATOR_PREFERENCES_FILE = C:\Users\Tommy\git\MADneSs_Lite\MADneSs_Monitoring_Lite\selectedIndicators.preferences
+INDICATOR_PREFERENCES_FILE = .\selectedIndicators.preferences
 
 * Experiment Type Shell - Timing
 TIMING_EXPERIMENT = 4
