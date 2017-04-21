@@ -117,5 +117,10 @@ public class CentOSProbe extends CycleProbe {
 				"nr_inactive_file", "nr_active_file", "pgpgin", "pgpgout", "pgalloc_dma", 
 				"pgfree", "pgactivate", "pgdeactivate", "pgfault", "pgmajfault"};
 	}
+
+	@Override
+	public boolean canRun() {
+		return true;
+	}
 	
 }

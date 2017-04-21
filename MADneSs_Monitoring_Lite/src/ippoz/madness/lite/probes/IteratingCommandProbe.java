@@ -23,8 +23,15 @@ public abstract class IteratingCommandProbe extends CycleProbe {
 	public IteratingCommandProbe(String command, String commandArgs, ProbeType probeLayer, String probeName, LinkedList<Indicator> indicators) {
 		super(probeLayer, probeName, indicators);
 		cRunner = new CommandRunner(command, commandArgs);
-		commandThread = new Thread(cRunner);
-		commandThread.start();
+		if(cRunner.canRun()){
+			commandThread = new Thread(cRunner);
+			commandThread.start();
+		} else AppLogger.logError(getClass(), "ShellCommandError", command + " - cannot be executed. Unable to instantiate probe " + probeLayer);
+	}
+	
+	@Override
+	public boolean canRun(){
+		return commandThread != null;
 	}
 
 	protected abstract boolean isHeader(String line);
@@ -33,7 +40,7 @@ public abstract class IteratingCommandProbe extends CycleProbe {
 	public void shutdownProbe() {
 		cRunner.interruptCommand();
 		super.shutdownProbe();
-		if(!commandThread.isInterrupted())
+		if(commandThread != null && !commandThread.isInterrupted())
 			commandThread.interrupt();
 	}
 
@@ -48,6 +55,17 @@ public abstract class IteratingCommandProbe extends CycleProbe {
 			this.command = command;
 			this.commandArgs = commandArgs;
 			halt = false;
+		}
+
+		public boolean canRun() {
+			String script = command + " " + commandArgs;
+			try {
+				process = Runtime.getRuntime().exec(script);
+		        process.destroy();
+		        return true;
+			} catch(Exception ex){
+				return false;
+			}
 		}
 
 		@Override
