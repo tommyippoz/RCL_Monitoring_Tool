@@ -52,6 +52,11 @@ public class JVMProbe extends CycleProbe {
 		return null;
 	}
 
+	@Override
+	public boolean canRun() {
+		return true;
+	}
+
 	
 
 }

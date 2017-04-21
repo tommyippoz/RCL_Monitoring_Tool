@@ -28,6 +28,8 @@ public abstract class Probe implements Runnable {
 		obsDelay = 1000;
 	}
 	
+	public abstract boolean canRun();
+	
 	public TreeMap<Date, HashMap<Indicator, String>> getData(){
 		return data;
 	}
@@ -78,11 +80,13 @@ public abstract class Probe implements Runnable {
 
 	@Override
 	public void run() {
-		if(indicators == null){
-			indicators = setDefaultIndicators();
+		if(canRun()){
+			if(indicators == null){
+				indicators = setDefaultIndicators();
+			}
+			data = null;
+			startProbe();
 		}
-		data = null;
-		startProbe();
 	}
 	
 }

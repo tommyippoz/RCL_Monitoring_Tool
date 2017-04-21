@@ -99,7 +99,7 @@ public class MADneSsLiteUI {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setBounds(100, 100, 1200, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setIconImage(new ImageIcon("images/RCL_Logo_Small.png").getImage());
+		frame.setIconImage(new ImageIcon(MADneSsLiteUI.class.getResource("/RCL_Logo_Small.png")).getImage());
 	}
 	
 	private void buildUI(){
@@ -344,8 +344,6 @@ public class MADneSsLiteUI {
 		pOutFolder.add(txtOutputFolder);
 		pPreferences.add(pOutFolder);
 		
-		
-		
 		JPanel pIndPreferences = new JPanel();
 		
 		JLabel lblIndPreferences = new JLabel("Indicator Preferences");
@@ -376,10 +374,10 @@ public class MADneSsLiteUI {
 		pPreferences.add(lblIndPrefFile);
 		
 		JPanel panelOkNo = new JPanel();
-		ImageIcon imageOK = new ImageIcon("images/picOK.jpg");
+		ImageIcon imageOK = new ImageIcon(MADneSsLiteUI.class.getResource("/picOK.jpg"));
 		Image imageSupport = imageOK.getImage().getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 		imageOK = new ImageIcon(imageSupport);
-		ImageIcon imageNO = new ImageIcon("images/picNO.jpg");
+		ImageIcon imageNO = new ImageIcon(MADneSsLiteUI.class.getResource("/picNO.jpg"));
 		imageSupport = imageNO.getImage().getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 		imageNO = new ImageIcon(imageSupport);
 		JLabel labelOK = new JLabel("", imageOK, JLabel.CENTER);
@@ -596,10 +594,10 @@ public class MADneSsLiteUI {
 		pExperiments.add(pIterations);
 		
 		JPanel panelOkNo = new JPanel();
-		ImageIcon imageOK = new ImageIcon("images/picOK.jpg");
+		ImageIcon imageOK = new ImageIcon(MADneSsLiteUI.class.getResource("/picOK.jpg"));
 		Image imageSupport = imageOK.getImage().getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 		imageOK = new ImageIcon(imageSupport);
-		ImageIcon imageNO = new ImageIcon("images/picNO.jpg");
+		ImageIcon imageNO = new ImageIcon(MADneSsLiteUI.class.getResource("/picNO.jpg"));
 		imageSupport = imageNO.getImage().getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 		imageNO = new ImageIcon(imageSupport);
 		JLabel labelOK = new JLabel("", imageOK, JLabel.CENTER);
@@ -744,10 +742,10 @@ public class MADneSsLiteUI {
 		pOutput.add(pMail);
 		
 		JPanel panelOkNo = new JPanel();
-		ImageIcon imageOK = new ImageIcon("images/picOK.jpg");
+		ImageIcon imageOK = new ImageIcon(MADneSsLiteUI.class.getResource("/picOK.jpg"));
 		Image imageSupport = imageOK.getImage().getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 		imageOK = new ImageIcon(imageSupport);
-		ImageIcon imageNO = new ImageIcon("images/picNO.jpg");
+		ImageIcon imageNO = new ImageIcon(MADneSsLiteUI.class.getResource("/picNO.jpg"));
 		imageSupport = imageNO.getImage().getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
 		imageNO = new ImageIcon(imageSupport);
 		JLabel labelOK = new JLabel("", imageOK, JLabel.CENTER);

@@ -64,7 +64,7 @@ public class ExperimentSetup extends Observable {
 	
 	public ExperimentSetup(){
 		expName = null;
-		outputFolder = null;
+		outputFolder = "./";
 		indPrefFile = null;
 		indMap = null;
 		obsInterval = 0;
@@ -178,7 +178,7 @@ public class ExperimentSetup extends Observable {
 	public void setOutputFolder(String text) {
 		if(text != null && text.trim().length() > 0)
 			outputFolder = text.trim();
-		else outputFolder = null;
+		else outputFolder = "./";
 		setupChanged();
 	}
 	

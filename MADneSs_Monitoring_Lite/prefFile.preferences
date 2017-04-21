@@ -7,10 +7,10 @@ EXPERIMENT_NAME = Puzzi
 OUTPUT_FOLDER = ./
 
 * Observation Interval
-OBSERVATION_INTERVAL = 200
+OBSERVATION_INTERVAL = 400
 
 * Indicator Preferences File
-INDICATOR_PREFERENCES_FILE = C:\Users\Tommy\git\MADneSs_Lite\MADneSs_Monitoring_Lite\selectedIndicators.preferences
+INDICATOR_PREFERENCES_FILE = /home/ippoz/git/MADneSs_Lite/MADneSs_Monitoring_Lite/selectedIndicators.preferences
 
 * Experiment Type Shell - Timing
 TIMING_EXPERIMENT = 4
@@ -25,4 +25,3 @@ OUTPUT_TYPE = EACH_EXPERIMENT_EACH_INDICATOR
 OUTPUT_ZIP_FLAG = true
 
 * Mail Output
-OUTPUT_MAIL_ADDRESS = tommyippoz@gmail.com
