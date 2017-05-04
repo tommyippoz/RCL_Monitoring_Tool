@@ -23,7 +23,8 @@ public class ProbeManager {
 	
 	public void addProbe(Probe newProbe){
 		newProbe.setupParameters();
-		probes.add(newProbe);
+		if(newProbe.canRun())
+			probes.add(newProbe);
 	}
 	
 	public void startProbes(){
