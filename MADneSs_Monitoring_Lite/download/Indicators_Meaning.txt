@@ -1,0 +1,37 @@
+Indicators Explained
+
+OS
+
+MemFree — The amount of physical RAM, in kilobytes, left unused by the system.
+Buffers — The amount of physical RAM, in kilobytes, used for file buffers.
+Cached — The amount of physical RAM, in kilobytes, used as cache memory.
+Active — The total amount of buffer or page cache memory, in kilobytes, that is in active use. This is memory that has been recently used and is usually not reclaimed for other purposes.
+Inactive — The total amount of buffer or page cache memory, in kilobytes, that are free and available. This is memory that has not been recently used and can be reclaimed for other purposes.
+SwapFree — The total amount of swap free, in kilobytes.
+
+pgpgin - Number of pageins (since the last boot):
+pgpgout - Number of pageouts (since the last boot)
+pgalloc_dma - Number of page allocations per zone (since the last boot)
+pgfree - Number of page frees (since the last boot)
+pgactivate - Number of page activations (since the last boot)
+pgdeactivate - Number of page deactivations (since the last boot)
+pgfault - Number of minor page faults (since the last boot)
+pgmajfault - Number of major page faults (since the last boot):
+
+NETWORK
+
+Net_Received - Bytes of data received from the network
+Net_Sent - Bytes of data sent through the network
+Tcp_Listen - Number of listening TCP sockets
+Tcp_Established  - Number of active TCP sockets
+Tcp_Syn  - Number of synchronized TCP sockets
+Tcp_TimeWait  - Number of waiting TCP sockets
+Tcp_Close - Number of closed TCP sockets
+
+JVM
+
+See http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/management/package-tree.html for the available documentation. Details are often hidden, so some tests can be needed to derive the exact meaning of the indicator.
+
+References
+- https://www.centos.org/docs/5/html/5.1/Deployment_Guide/s2-proc-meminfo.html
+- http://linuxinsight.com/proc_vmstat.html
