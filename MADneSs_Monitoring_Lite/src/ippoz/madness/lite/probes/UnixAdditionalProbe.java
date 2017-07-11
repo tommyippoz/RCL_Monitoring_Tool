@@ -15,12 +15,12 @@ import java.util.TreeMap;
  * @author root
  *
  */
-public class UnixNetworkProbe extends IteratingCommandProbe {
+public class UnixAdditionalProbe extends IteratingCommandProbe {
 
 	private TreeMap<String, String> paramNames;
 	
-	public UnixNetworkProbe(LinkedList<Indicator> indicators) {
-		super("dstat", " -n --tcp -d", ProbeType.UNIX_NETWORK, "UnixNetwork", indicators);
+	public UnixAdditionalProbe(LinkedList<Indicator> indicators) {
+		super("dstat", " -d", ProbeType.UNIX, "UnixAdditional", indicators);
 	}
 	
 	@Override
@@ -30,13 +30,8 @@ public class UnixNetworkProbe extends IteratingCommandProbe {
 
 	private void setupParamNames() {
 		paramNames = new TreeMap<String, String>();
-		paramNames.put("recv", "Net_Received");
-		paramNames.put("send", "Net_Sent");
-		paramNames.put("lis", "Tcp_Listen");
-		paramNames.put("act", "Tcp_Established");
-		paramNames.put("syn", "Tcp_Syn");
-		paramNames.put("tim", "Tcp_TimeWait");
-		paramNames.put("clo", "Tcp_Close");
+		paramNames.put("read", "Disk_Read");
+		paramNames.put("writ", "Disk_Write");
 	}
 
 	@Override
@@ -88,14 +83,13 @@ public class UnixNetworkProbe extends IteratingCommandProbe {
 	public LinkedList<Indicator> setDefaultIndicators() {
 		LinkedList<Indicator> defaultList = new LinkedList<Indicator>();
 		for(String indName : listDefaultIndicatorNames()){
-			defaultList.add(Indicator.buildIndicator(indName, ProbeType.UNIX_NETWORK));
+			defaultList.add(Indicator.buildIndicator(indName, ProbeType.UNIX));
 		}
 		return defaultList;
 	}
 
 	public static String[] listDefaultIndicatorNames() {
-		return new String[]{"Net_Received", "Net_Sent", "Tcp_Listen", "Tcp_Established",
-				"Tcp_Syn", "Tcp_TimeWait", "Tcp_Close"};
+		return new String[]{"Disk_Read", "Disk_Write"};
 	}	
 
 }

@@ -8,5 +8,5 @@ package ippoz.madness.lite.probes;
  *
  */
 public enum ProbeType {
-	CENTOS, JVM, UNIX_NETWORK
+	CENTOS, JVM, UNIX_NETWORK, UNIX
 }
