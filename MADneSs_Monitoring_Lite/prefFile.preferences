@@ -1,7 +1,7 @@
 * Preferences File for RCL Monitoring Tool
 
 * Experiment Name
-EXPERIMENT_NAME = Puzzi
+EXPERIMENT_NAME = Test
 
 * Output Folder
 OUTPUT_FOLDER = ./

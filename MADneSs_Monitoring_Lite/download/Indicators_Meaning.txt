@@ -18,10 +18,14 @@ pgdeactivate - Number of page deactivations (since the last boot)
 pgfault - Number of minor page faults (since the last boot)
 pgmajfault - Number of major page faults (since the last boot):
 
+UNIX
+Disk_Read - read operations executed on disk since the last observation
+Disk_Write - write operations executed on disk since the last observation
+
 NETWORK
 
-Net_Received - Bytes of data received from the network
-Net_Sent - Bytes of data sent through the network
+Net_Received - Bytes of data received from the network since the last observation
+Net_Sent - Bytes of data sent through the network since the last observation
 Tcp_Listen - Number of listening TCP sockets
 Tcp_Established  - Number of active TCP sockets
 Tcp_Syn  - Number of synchronized TCP sockets
@@ -30,7 +34,8 @@ Tcp_Close - Number of closed TCP sockets
 
 JVM
 
-See http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/management/package-tree.html for the available documentation. Details are often hidden, so some tests can be needed to derive the exact meaning of the indicator.
+See http://docs.oracle.com/javase/1.5.0/docs/api/java/lang/management/package-tree.html for the available documentation. 
+Details are often hidden, so some tests can be needed to derive the exact meaning of the indicator.
 
 References
 - https://www.centos.org/docs/5/html/5.1/Deployment_Guide/s2-proc-meminfo.html

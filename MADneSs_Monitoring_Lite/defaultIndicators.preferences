@@ -2,32 +2,9 @@
 * Use '*' to comment rows
 * All indicators are commented, please uncomment the chosen ones
 
-UNIX_NETWORK
-* Net_Received
-* Net_Sent
-* Tcp_Listen
-* Tcp_Established
-* Tcp_Syn
-* Tcp_TimeWait
-* Tcp_Close
-
-CENTOS
-* MemFree
-* Buffers
-* Cached
-* Active
-* Inactive
-* SwapFree
-* nr_inactive_file
-* nr_active_file
-* pgpgin
-* pgpgout
-* pgalloc_dma
-* pgfree
-* pgactivate
-* pgdeactivate
-* pgfault
-* pgmajfault
+UNIX
+* Disk_Read
+* Disk_Write
 
 JVM
 * MemoryPoolImpl.Valid
@@ -64,10 +41,10 @@ JVM
 * OperatingSystemImpl.TotalPhysicalMemorySize
 * OperatingSystemImpl.SystemCpuLoad
 * OperatingSystemImpl.ProcessCpuLoad
-* OperatingSystemImpl.AvailableProcessors
-* OperatingSystemImpl.Version
 * OperatingSystemImpl.Arch
 * OperatingSystemImpl.SystemLoadAverage
+* OperatingSystemImpl.AvailableProcessors
+* OperatingSystemImpl.Version
 * OperatingSystemImpl.Name
 * OperatingSystemImpl.ObjectName.type
 * MemoryManagerImpl.Valid
@@ -139,14 +116,6 @@ JVM
 * ClassLoadingImpl.UnloadedClassCount
 * ClassLoadingImpl.Verbose
 * ClassLoadingImpl.ObjectName.type
-* RuntimeImpl.BootClassPathSupported
-* RuntimeImpl.VmName
-* RuntimeImpl.VmVendor
-* RuntimeImpl.VmVersion
-* RuntimeImpl.LibraryPath
-* RuntimeImpl.BootClassPath
-* RuntimeImpl.Uptime
-* RuntimeImpl.StartTime
 * RuntimeImpl.SpecName
 * RuntimeImpl.SpecVendor
 * RuntimeImpl.SpecVersion
@@ -206,6 +175,14 @@ JVM
 * RuntimeImpl.SystemProperties."java.ext.dirs"
 * RuntimeImpl.SystemProperties."sun.io.unicode.encoding"
 * RuntimeImpl.SystemProperties."java.class.version"
+* RuntimeImpl.BootClassPathSupported
+* RuntimeImpl.VmName
+* RuntimeImpl.VmVendor
+* RuntimeImpl.VmVersion
+* RuntimeImpl.LibraryPath
+* RuntimeImpl.BootClassPath
+* RuntimeImpl.Uptime
+* RuntimeImpl.StartTime
 * RuntimeImpl.Name
 * RuntimeImpl.ClassPath
 * RuntimeImpl.ObjectName.type
@@ -282,22 +259,22 @@ JVM
 * HotSpotDiagnostic.DiagnosticOptions.value#17
 * HotSpotDiagnostic.DiagnosticOptions.writeable#17
 * HotSpotDiagnostic.ObjectName.type
-* ThreadImpl.ThreadAllocatedMemorySupported
 * ThreadImpl.ThreadAllocatedMemoryEnabled
+* ThreadImpl.ThreadAllocatedMemorySupported
+* ThreadImpl.ThreadCount
+* ThreadImpl.TotalStartedThreadCount
+* ThreadImpl.AllThreadIds
+* ThreadImpl.ThreadContentionMonitoringEnabled
+* ThreadImpl.CurrentThreadCpuTime
+* ThreadImpl.CurrentThreadUserTime
+* ThreadImpl.ThreadCpuTimeSupported
+* ThreadImpl.ThreadCpuTimeEnabled
 * ThreadImpl.ThreadContentionMonitoringSupported
 * ThreadImpl.CurrentThreadCpuTimeSupported
 * ThreadImpl.ObjectMonitorUsageSupported
 * ThreadImpl.SynchronizerUsageSupported
-* ThreadImpl.ThreadContentionMonitoringEnabled
-* ThreadImpl.ThreadCpuTimeEnabled
 * ThreadImpl.PeakThreadCount
 * ThreadImpl.DaemonThreadCount
-* ThreadImpl.ThreadCount
-* ThreadImpl.TotalStartedThreadCount
-* ThreadImpl.AllThreadIds
-* ThreadImpl.CurrentThreadCpuTime
-* ThreadImpl.CurrentThreadUserTime
-* ThreadImpl.ThreadCpuTimeSupported
 * ThreadImpl.ObjectName.type
 * GarbageCollectorImpl.CollectionCount
 * GarbageCollectorImpl.CollectionTime
@@ -313,9 +290,9 @@ JVM
 * MemoryManagerImpl.Name
 * MemoryManagerImpl.ObjectName.name
 * MemoryManagerImpl.ObjectName.type
+* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.TotalCapacity
 * ManagementFactoryHelper$1.MemoryUsed
-* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.Name
 * ManagementFactoryHelper$1.ObjectName.name
 * ManagementFactoryHelper$1.ObjectName.type
@@ -357,9 +334,9 @@ JVM
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
+* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.TotalCapacity
 * ManagementFactoryHelper$1.MemoryUsed
-* ManagementFactoryHelper$1.Count
 * ManagementFactoryHelper$1.Name
 * ManagementFactoryHelper$1.ObjectName.name
 * ManagementFactoryHelper$1.ObjectName.type
@@ -505,6 +482,29 @@ JVM
 * CompilationImpl.Name
 * CompilationImpl.ObjectName.type
 
-UNIX
-* Disk_Bytes_Read
-* Disk_Bytes_Wrote
+UNIX_NETWORK
+* Net_Received
+* Net_Sent
+* Tcp_Listen
+* Tcp_Established
+* Tcp_Syn
+* Tcp_TimeWait
+* Tcp_Close
+
+CENTOS
+* MemFree
+* Buffers
+* Cached
+* Active
+* Inactive
+* SwapFree
+* nr_inactive_file
+* nr_active_file
+* pgpgin
+* pgpgout
+* pgalloc_dma
+* pgfree
+* pgactivate
+* pgdeactivate
+* pgfault
+* pgmajfault

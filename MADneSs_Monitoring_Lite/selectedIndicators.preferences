@@ -37,8 +37,8 @@ Tcp_TimeWait
 Tcp_Close
 
 UNIX
-Disk_Bytes_Read
-Disk_Bytes_Wrote
+Disk_Read
+Disk_Write
 
 CENTOS
 MemFree

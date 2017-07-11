@@ -30,8 +30,8 @@ public class UnixAdditionalProbe extends IteratingCommandProbe {
 
 	private void setupParamNames() {
 		paramNames = new TreeMap<String, String>();
-		paramNames.put("read", "Disk_Bytes_Read");
-		paramNames.put("writ", "Disk_Bytes_Wrote");
+		paramNames.put("read", "Disk_Read");
+		paramNames.put("writ", "Disk_Write");
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class UnixAdditionalProbe extends IteratingCommandProbe {
 	}
 
 	public static String[] listDefaultIndicatorNames() {
-		return new String[]{"Disk_Bytes_Read", "Disk_Bytes_Wrote"};
+		return new String[]{"Disk_Read", "Disk_Write"};
 	}	
 
 }
