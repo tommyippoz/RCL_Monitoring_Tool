@@ -10,6 +10,7 @@ import ippoz.madness.lite.probes.CentOSProbe;
 import ippoz.madness.lite.probes.Indicator;
 import ippoz.madness.lite.probes.JVMProbe;
 import ippoz.madness.lite.probes.ProbeType;
+import ippoz.madness.lite.probes.UnixAdditionalProbe;
 import ippoz.madness.lite.probes.UnixNetworkProbe;
 import ippoz.madness.lite.support.AppLogger;
 import ippoz.madness.lite.support.AppUtility;
@@ -605,6 +606,12 @@ public class ExperimentSetup extends Observable {
 				defaultInd.get(ProbeType.UNIX_NETWORK).add(indName);
 			}
 		}
+		if(canBeInstrumentedWith(ProbeType.UNIX)){
+			defaultInd.put(ProbeType.UNIX, new LinkedList<String>());
+			for(String indName : UnixAdditionalProbe.listDefaultIndicatorNames()){
+				defaultInd.get(ProbeType.UNIX).add(indName);
+			}
+		}
 		return defaultInd;
 	}
 	
@@ -615,6 +622,8 @@ public class ExperimentSetup extends Observable {
 			case CENTOS:
 				return AppUtility.isLinux() || AppUtility.isUNIX();
 			case UNIX_NETWORK:
+				return AppUtility.isLinux() || AppUtility.isUNIX();
+			case UNIX:
 				return AppUtility.isLinux() || AppUtility.isUNIX();
 			default: 
 				return false;

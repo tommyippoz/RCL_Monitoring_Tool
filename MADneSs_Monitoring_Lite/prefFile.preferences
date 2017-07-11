@@ -7,21 +7,21 @@ EXPERIMENT_NAME = Puzzi
 OUTPUT_FOLDER = ./
 
 * Observation Interval
-OBSERVATION_INTERVAL = 400
+OBSERVATION_INTERVAL = 1000
 
 * Indicator Preferences File
 INDICATOR_PREFERENCES_FILE = /home/ippoz/git/MADneSs_Lite/MADneSs_Monitoring_Lite/selectedIndicators.preferences
 
 * Experiment Type Shell - Timing
-TIMING_EXPERIMENT = 4
+TIMING_EXPERIMENT = 5
 
 * ExperimentIter
-EXPERIMENT_ITERATIONS = 4
+EXPERIMENT_ITERATIONS = 1
 
 * Output Type
-OUTPUT_TYPE = EACH_EXPERIMENT_EACH_INDICATOR
+OUTPUT_TYPE = SINGLE_FILE
 
 * Zip Output
-OUTPUT_ZIP_FLAG = true
+OUTPUT_ZIP_FLAG = false
 
 * Mail Output

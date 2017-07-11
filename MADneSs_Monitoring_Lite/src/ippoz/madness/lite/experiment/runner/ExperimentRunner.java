@@ -9,7 +9,9 @@ import ippoz.madness.lite.probes.JVMProbe;
 import ippoz.madness.lite.probes.Probe;
 import ippoz.madness.lite.probes.ProbeManager;
 import ippoz.madness.lite.probes.ProbeType;
+import ippoz.madness.lite.probes.UnixAdditionalProbe;
 import ippoz.madness.lite.probes.UnixNetworkProbe;
+import ippoz.madness.lite.support.AppLogger;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -33,19 +35,24 @@ public abstract class ExperimentRunner implements Runnable {
 	public void setProbes(HashMap<ProbeType, LinkedList<Indicator>> indMap) {
 		pManager = new ProbeManager();
 		for(ProbeType pt : indMap.keySet()){
-			switch(pt){
-				case JVM:
-					addProbe(new JVMProbe(indMap.get(pt)));
-					break;
-				case CENTOS:
-					addProbe(new CentOSProbe(indMap.get(pt)));
-					break;
-				case UNIX_NETWORK:
-					addProbe(new UnixNetworkProbe(indMap.get(pt)));
-					break;
-				default:
-					break;
-			}
+			if(indMap.get(pt) != null && indMap.get(pt).size() > 0){
+				switch(pt){
+					case JVM:
+						addProbe(new JVMProbe(indMap.get(pt)));
+						break;
+					case CENTOS:
+						addProbe(new CentOSProbe(indMap.get(pt)));
+						break;
+					case UNIX_NETWORK:
+						addProbe(new UnixNetworkProbe(indMap.get(pt)));
+						break;
+					case UNIX:
+						addProbe(new UnixAdditionalProbe(indMap.get(pt)));
+						break;
+					default:
+						break;
+				}
+			} else AppLogger.logInfo(getClass(), "No indicators were selected for probe " + pt.toString());
 		}
 		
 	}

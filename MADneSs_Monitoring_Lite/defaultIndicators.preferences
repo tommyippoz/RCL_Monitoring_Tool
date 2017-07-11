@@ -2,7 +2,35 @@
 * Use '*' to comment rows
 * All indicators are commented, please uncomment the chosen ones
 
+UNIX_NETWORK
+* Net_Received
+* Net_Sent
+* Tcp_Listen
+* Tcp_Established
+* Tcp_Syn
+* Tcp_TimeWait
+* Tcp_Close
+
+CENTOS
+* MemFree
+* Buffers
+* Cached
+* Active
+* Inactive
+* SwapFree
+* nr_inactive_file
+* nr_active_file
+* pgpgin
+* pgpgout
+* pgalloc_dma
+* pgfree
+* pgactivate
+* pgdeactivate
+* pgfault
+* pgmajfault
+
 JVM
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Usage.committed
 * MemoryPoolImpl.Usage.init
 * MemoryPoolImpl.Usage.max
@@ -22,7 +50,6 @@ JVM
 * MemoryPoolImpl.CollectionUsage.max
 * MemoryPoolImpl.CollectionUsage.used
 * MemoryPoolImpl.CollectionUsageThresholdSupported
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
@@ -37,18 +64,19 @@ JVM
 * OperatingSystemImpl.TotalPhysicalMemorySize
 * OperatingSystemImpl.SystemCpuLoad
 * OperatingSystemImpl.ProcessCpuLoad
+* OperatingSystemImpl.AvailableProcessors
+* OperatingSystemImpl.Version
 * OperatingSystemImpl.Arch
 * OperatingSystemImpl.SystemLoadAverage
-* OperatingSystemImpl.Version
-* OperatingSystemImpl.AvailableProcessors
 * OperatingSystemImpl.Name
 * OperatingSystemImpl.ObjectName.type
+* MemoryManagerImpl.Valid
 * MemoryManagerImpl.MemoryPoolNames#0
 * MemoryManagerImpl.MemoryPoolNames#1
-* MemoryManagerImpl.Valid
 * MemoryManagerImpl.Name
 * MemoryManagerImpl.ObjectName.name
 * MemoryManagerImpl.ObjectName.type
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Usage.committed
 * MemoryPoolImpl.Usage.init
 * MemoryPoolImpl.Usage.max
@@ -63,16 +91,15 @@ JVM
 * MemoryPoolImpl.UsageThresholdCount
 * MemoryPoolImpl.UsageThresholdSupported
 * MemoryPoolImpl.CollectionUsageThresholdSupported
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
 * GarbageCollectorImpl.CollectionCount
 * GarbageCollectorImpl.CollectionTime
+* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.MemoryPoolNames#0
 * GarbageCollectorImpl.MemoryPoolNames#1
-* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.Name
 * GarbageCollectorImpl.ObjectName.name
 * GarbageCollectorImpl.ObjectName.type
@@ -83,6 +110,7 @@ JVM
 * MBeanServerDelegate.ImplementationName
 * MBeanServerDelegate.ImplementationVersion
 * MBeanServerDelegate.ImplementationVendor
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Usage.committed
 * MemoryPoolImpl.Usage.init
 * MemoryPoolImpl.Usage.max
@@ -102,7 +130,6 @@ JVM
 * MemoryPoolImpl.CollectionUsage.max
 * MemoryPoolImpl.CollectionUsage.used
 * MemoryPoolImpl.CollectionUsageThresholdSupported
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
@@ -112,6 +139,13 @@ JVM
 * ClassLoadingImpl.UnloadedClassCount
 * ClassLoadingImpl.Verbose
 * ClassLoadingImpl.ObjectName.type
+* RuntimeImpl.BootClassPathSupported
+* RuntimeImpl.VmName
+* RuntimeImpl.VmVendor
+* RuntimeImpl.VmVersion
+* RuntimeImpl.LibraryPath
+* RuntimeImpl.BootClassPath
+* RuntimeImpl.Uptime
 * RuntimeImpl.StartTime
 * RuntimeImpl.SpecName
 * RuntimeImpl.SpecVendor
@@ -172,13 +206,6 @@ JVM
 * RuntimeImpl.SystemProperties."java.ext.dirs"
 * RuntimeImpl.SystemProperties."sun.io.unicode.encoding"
 * RuntimeImpl.SystemProperties."java.class.version"
-* RuntimeImpl.BootClassPathSupported
-* RuntimeImpl.VmName
-* RuntimeImpl.VmVendor
-* RuntimeImpl.VmVersion
-* RuntimeImpl.LibraryPath
-* RuntimeImpl.BootClassPath
-* RuntimeImpl.Uptime
 * RuntimeImpl.Name
 * RuntimeImpl.ClassPath
 * RuntimeImpl.ObjectName.type
@@ -255,34 +282,34 @@ JVM
 * HotSpotDiagnostic.DiagnosticOptions.value#17
 * HotSpotDiagnostic.DiagnosticOptions.writeable#17
 * HotSpotDiagnostic.ObjectName.type
-* ThreadImpl.ThreadAllocatedMemoryEnabled
 * ThreadImpl.ThreadAllocatedMemorySupported
-* ThreadImpl.ThreadCount
-* ThreadImpl.TotalStartedThreadCount
-* ThreadImpl.AllThreadIds
-* ThreadImpl.ThreadContentionMonitoringEnabled
-* ThreadImpl.CurrentThreadCpuTime
-* ThreadImpl.CurrentThreadUserTime
-* ThreadImpl.ThreadCpuTimeSupported
-* ThreadImpl.ThreadCpuTimeEnabled
+* ThreadImpl.ThreadAllocatedMemoryEnabled
 * ThreadImpl.ThreadContentionMonitoringSupported
 * ThreadImpl.CurrentThreadCpuTimeSupported
 * ThreadImpl.ObjectMonitorUsageSupported
 * ThreadImpl.SynchronizerUsageSupported
+* ThreadImpl.ThreadContentionMonitoringEnabled
+* ThreadImpl.ThreadCpuTimeEnabled
 * ThreadImpl.PeakThreadCount
 * ThreadImpl.DaemonThreadCount
+* ThreadImpl.ThreadCount
+* ThreadImpl.TotalStartedThreadCount
+* ThreadImpl.AllThreadIds
+* ThreadImpl.CurrentThreadCpuTime
+* ThreadImpl.CurrentThreadUserTime
+* ThreadImpl.ThreadCpuTimeSupported
 * ThreadImpl.ObjectName.type
 * GarbageCollectorImpl.CollectionCount
 * GarbageCollectorImpl.CollectionTime
+* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.MemoryPoolNames#0
 * GarbageCollectorImpl.MemoryPoolNames#1
 * GarbageCollectorImpl.MemoryPoolNames#2
-* GarbageCollectorImpl.Valid
 * GarbageCollectorImpl.Name
 * GarbageCollectorImpl.ObjectName.name
 * GarbageCollectorImpl.ObjectName.type
-* MemoryManagerImpl.MemoryPoolNames#0
 * MemoryManagerImpl.Valid
+* MemoryManagerImpl.MemoryPoolNames#0
 * MemoryManagerImpl.Name
 * MemoryManagerImpl.ObjectName.name
 * MemoryManagerImpl.ObjectName.type
@@ -292,6 +319,7 @@ JVM
 * ManagementFactoryHelper$1.Name
 * ManagementFactoryHelper$1.ObjectName.name
 * ManagementFactoryHelper$1.ObjectName.type
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Usage.committed
 * MemoryPoolImpl.Usage.init
 * MemoryPoolImpl.Usage.max
@@ -306,11 +334,11 @@ JVM
 * MemoryPoolImpl.UsageThresholdCount
 * MemoryPoolImpl.UsageThresholdSupported
 * MemoryPoolImpl.CollectionUsageThresholdSupported
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
 * MemoryPoolImpl.ObjectName.type
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Usage.committed
 * MemoryPoolImpl.Usage.init
 * MemoryPoolImpl.Usage.max
@@ -325,7 +353,6 @@ JVM
 * MemoryPoolImpl.UsageThresholdCount
 * MemoryPoolImpl.UsageThresholdSupported
 * MemoryPoolImpl.CollectionUsageThresholdSupported
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
@@ -336,6 +363,7 @@ JVM
 * ManagementFactoryHelper$1.Name
 * ManagementFactoryHelper$1.ObjectName.name
 * ManagementFactoryHelper$1.ObjectName.type
+* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Usage.committed
 * MemoryPoolImpl.Usage.init
 * MemoryPoolImpl.Usage.max
@@ -357,7 +385,6 @@ JVM
 * MemoryPoolImpl.CollectionUsage.max
 * MemoryPoolImpl.CollectionUsage.used
 * MemoryPoolImpl.CollectionUsageThresholdSupported
-* MemoryPoolImpl.Valid
 * MemoryPoolImpl.Name
 * MemoryPoolImpl.Type
 * MemoryPoolImpl.ObjectName.name
@@ -478,29 +505,6 @@ JVM
 * CompilationImpl.Name
 * CompilationImpl.ObjectName.type
 
-CENTOS
-* MemFree
-* Buffers
-* Cached
-* Active
-* Inactive
-* SwapFree
-* nr_inactive_file
-* nr_active_file
-* pgpgin
-* pgpgout
-* pgalloc_dma
-* pgfree
-* pgactivate
-* pgdeactivate
-* pgfault
-* pgmajfault
-
-UNIX_NETWORK
-* Net_Received
-* Net_Sent
-* Tcp_Listen
-* Tcp_Established
-* Tcp_Syn
-* Tcp_TimeWait
-* Tcp_Close
+UNIX
+* Disk_Bytes_Read
+* Disk_Bytes_Wrote

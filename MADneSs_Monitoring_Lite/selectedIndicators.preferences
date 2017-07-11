@@ -3,11 +3,11 @@
 * All indicators are commented, please uncomment the chosen ones
 
 JVM
-OperatingSystemImpl.CommittedVirtualMemorySize
-OperatingSystemImpl.FreePhysicalMemorySize
-OperatingSystemImpl.FreeSwapSpaceSize
-OperatingSystemImpl.ProcessCpuLoad
-OperatingSystemImpl.ProcessCpuTime
+*OperatingSystemImpl.CommittedVirtualMemorySize
+*OperatingSystemImpl.FreePhysicalMemorySize
+*OperatingSystemImpl.FreeSwapSpaceSize
+*OperatingSystemImpl.ProcessCpuLoad
+*OperatingSystemImpl.ProcessCpuTime
 * OperatingSystemImpl.SystemCpuLoad
 * OperatingSystemImpl.TotalPhysicalMemorySize
 * OperatingSystemImpl.TotalSwapSpaceSize
@@ -36,6 +36,10 @@ Tcp_Syn
 Tcp_TimeWait
 Tcp_Close
 
+UNIX
+Disk_Bytes_Read
+Disk_Bytes_Wrote
+
 CENTOS
 MemFree
 Buffers
@@ -44,12 +48,12 @@ Active
 Inactive
 SwapFree
 nr_inactive_file
-nr_active_file
-pgpgin
-pgpgout
-pgalloc_dma
-pgfree
-pgactivate
-pgdeactivate
-pgfault
-pgmajfault
+*nr_active_file
+*pgpgin
+*pgpgout
+*pgalloc_dma
+*pgfree
+*pgactivate
+*pgdeactivate
+*pgfault
+*pgmajfault
