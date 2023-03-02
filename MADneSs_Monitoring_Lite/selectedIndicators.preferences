@@ -3,21 +3,21 @@
 * All indicators are commented, please uncomment the chosen ones
 
 JVM
-*OperatingSystemImpl.CommittedVirtualMemorySize
+OperatingSystemImpl.CommittedVirtualMemorySize
 *OperatingSystemImpl.FreePhysicalMemorySize
 *OperatingSystemImpl.FreeSwapSpaceSize
 *OperatingSystemImpl.ProcessCpuLoad
 *OperatingSystemImpl.ProcessCpuTime
-* OperatingSystemImpl.SystemCpuLoad
+OperatingSystemImpl.SystemCpuLoad
 * OperatingSystemImpl.TotalPhysicalMemorySize
 * OperatingSystemImpl.TotalSwapSpaceSize
 * OperatingSystemImpl.Name
 * OperatingSystemImpl.Version
 * OperatingSystemImpl.AvailableProcessors
 * OperatingSystemImpl.Arch
-* OperatingSystemImpl.SystemLoadAverage
+OperatingSystemImpl.SystemLoadAverage
 * OperatingSystemImpl.ObjectName.type
-* MemoryManagerImpl.Name
+MemoryManagerImpl.Name
 * MemoryManagerImpl.Valid
 * MemoryManagerImpl.MemoryPoolNames#0
 * MemoryManagerImpl.MemoryPoolNames#1

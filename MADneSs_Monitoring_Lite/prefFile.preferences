@@ -1,22 +1,22 @@
 * Preferences File for RCL Monitoring Tool
 
 * Experiment Name
-EXPERIMENT_NAME = Test
+EXPERIMENT_NAME = aaa
 
 * Output Folder
 OUTPUT_FOLDER = ./
 
 * Observation Interval
-OBSERVATION_INTERVAL = 1000
+OBSERVATION_INTERVAL = 200
 
 * Indicator Preferences File
-INDICATOR_PREFERENCES_FILE = /home/ippoz/git/MADneSs_Lite/MADneSs_Monitoring_Lite/selectedIndicators.preferences
+INDICATOR_PREFERENCES_FILE = C:\Users\tomma\git\RCL_Monitoring_Tool\MADneSs_Monitoring_Lite\defaultIndicators.preferences
 
 * Experiment Type Shell - Timing
 TIMING_EXPERIMENT = 5
 
 * ExperimentIter
-EXPERIMENT_ITERATIONS = 1
+EXPERIMENT_ITERATIONS = 5
 
 * Output Type
 OUTPUT_TYPE = SINGLE_FILE

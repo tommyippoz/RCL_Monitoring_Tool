@@ -7,9 +7,6 @@ import java.io.File;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,6 +18,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.sql.DataSource;
 
 /**
  * @author Tommy
@@ -56,8 +54,8 @@ public class MailUtils {
 	         Multipart multipart = new MimeMultipart();
 	         multipart.addBodyPart(messageBodyPart);
 	         messageBodyPart = new MimeBodyPart();
-	         DataSource source = new FileDataSource(attachment);
-	         messageBodyPart.setDataHandler(new DataHandler(source));
+	         //DataSource source = new FileDataSource(attachment);
+	         //messageBodyPart.setDataHandler(new DataHandler(source));
 	         messageBodyPart.setFileName(attachment.getName());
 	         multipart.addBodyPart(messageBodyPart);
 

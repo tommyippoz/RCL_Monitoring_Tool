@@ -41,7 +41,7 @@ public class ProbeManager {
 	
 	public TreeMap<Date, HashMap<Indicator, String>> getMonitoredData(){
 		TreeMap<Date, HashMap<Indicator, String>> mData, partial;
-		if(probes == null || probes.size() == 0)
+		if(probes == null || probes.size() == 0 || probes.getFirst() == null)
 			return null;
 		mData = probes.getFirst().getData();
 		for(int i=1;i<probes.size();i++){

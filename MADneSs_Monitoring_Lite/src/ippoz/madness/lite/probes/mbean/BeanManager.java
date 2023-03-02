@@ -127,28 +127,28 @@ public class BeanManager {
 				for(int i=0;i<vect.length;i++){
 					result.add(new PrimitiveArrayBeanAttribute(objInstance, mBeanInfo, att, i));
 				}
-			} else if(attValue.getClass().getName().equals("[J"))
+			} else if(attValue.getClass().getName().compareTo("[J") == 0)
 				result.add(new ArrayBeanAttribute(objInstance, mBeanInfo, att));
-			else if(attValue.getClass().getName().equals("javax.management.ObjectName")){
+			else if(attValue.getClass().getName().compareTo("javax.management.ObjectName") == 0){
 				for(String key : ((ObjectName)attValue).getKeyPropertyList().keySet()) {
 					result.add(new ObjectNameBeanAttribute(objInstance, mBeanInfo, att, key));
 				}
-			} else if(attValue.getClass().getName().equals("javax.management.openmbean.CompositeDataSupport")) {
+			} else if(attValue.getClass().getName().compareTo("javax.management.openmbean.CompositeDataSupport") == 0) {
 				Iterator<?> cdsIt = ((CompositeDataSupport)attValue).getCompositeType().keySet().iterator();
 				while(cdsIt.hasNext()){
 					result.add(new CompositeBeanAttribute(objInstance, mBeanInfo, att, cdsIt.next().toString()));
 				}
-			} else if(attValue.getClass().getName().equals("[Ljavax.management.openmbean.CompositeData;")){
+			} else if(attValue.getClass().getName().compareTo("[Ljavax.management.openmbean.CompositeData;") == 0){
 				CompositeData[] cdVect = (CompositeData[]) attValue;
 				for(int i=0;i<cdVect.length;i++){
 					for(String key : cdVect[i].getCompositeType().keySet()) {
 						result.add(new CompositeArrayBeanAttribute(objInstance, mBeanInfo, att, i, key));
 					}
 				}
-			} else if(attValue.getClass().getName().equals("javax.management.openmbean.TabularDataSupport")) {
+			} else if(attValue.getClass().getName().compareTo("javax.management.openmbean.TabularDataSupport") == 0) {
 				for(Object key : ((TabularDataSupport)attValue).keySet()){
 					result.add(new TabularSupportBeanAttribute(objInstance, mBeanInfo, att, ((List<String>)key).get(0)));
-				}
+				} 
 			} else ProbeLogger.logException(getClass(), new RuntimeException("Unable to process " + attValue.getClass().getName() + " type"), "Cast Error");	
 		}
 		return result;

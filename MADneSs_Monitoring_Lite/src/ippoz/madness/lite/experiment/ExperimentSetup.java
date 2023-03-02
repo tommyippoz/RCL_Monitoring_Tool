@@ -342,23 +342,25 @@ public class ExperimentSetup extends Observable {
 			new Thread(new Runnable() {
 				public void run() {
 					Thread t;
-					LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData;
 					try {
-						expData = new LinkedList<TreeMap<Date, HashMap<Indicator, String>>>();
 						for(int i=0;i<experimentIterations;i++){
 							eRunner.setProbes(indMap);
 							t = new Thread(eRunner);
 							AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": STARTED");
 							t.start();
 							t.join();
-							expData.add(eRunner.getMonitoredData());
+							TreeMap<Date, HashMap<Indicator, String>>  monData = eRunner.getMonitoredData();
+							if (monData != null) {
+								storeData(monData, i);
+								AppLogger.logInfo(getClass(), "Stored Data");
+							} else {
+								AppLogger.logError(getClass(), "NullData", "Got null data for experiment " + String.valueOf(i));
+							}
 							AppLogger.logInfo(getClass(), "Experiment " + (i+1) + ": FINISHED (" + (eRunner.getMonitoredData() != null ? eRunner.getMonitoredData().size() : 0) + ")");
 							pBar.moveNext();
 							t = null;
 						}
 						Thread.sleep(500);
-						storeData(expData);
-						AppLogger.logInfo(getClass(), "Stored Data");
 						pBar.deleteFrame();
 					} catch (InterruptedException ex) {
 						AppLogger.logException(getClass(), ex, "Error while running experiment");
@@ -368,24 +370,24 @@ public class ExperimentSetup extends Observable {
 		} else AppLogger.logError(getClass(), "ExperimentRunnerError", "Experiment Runner is not set"); 
 	}
 
-	private void storeData(LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+	private void storeData(TreeMap<Date, HashMap<Indicator, String>> treeMap, int expNumber) {
 		File mainDir = new File(outputFolder + "/" + expName);
 		if(mainDir.exists())
 			mainDir.delete();
 		mainDir.mkdirs();
-		if(expData != null && expData.size() > 0){
+		if(treeMap != null && treeMap.size() > 0){
 			switch(outputType){
 				case SINGLE_FILE:
-					printSingleFile(mainDir, expData);
+					printSingleFile(mainDir, treeMap, expNumber);
 					break;
 				case EACH_INDICATOR:
-					printEachIndicatorFile(mainDir, expData);
+					printEachIndicatorFile(mainDir, treeMap, expNumber);
 					break;
 				case EACH_EXPERIMENT:
-					printEachExperimentFile(mainDir, expData);
+					printEachExperimentFile(mainDir, treeMap, expNumber);
 					break;
 				case EACH_EXPERIMENT_EACH_INDICATOR:
-					printEachExperimentEachIndicatorFile(mainDir, expData);
+					printEachExperimentEachIndicatorFile(mainDir, treeMap, expNumber);
 					break;
 				default:
 					AppLogger.logError(getClass(), "WrongEnumValue", "Unable to parse Output Type");
@@ -406,51 +408,58 @@ public class ExperimentSetup extends Observable {
 		return ZipUtils.zipFile(mainDir, mainDir.getPath() + ".zip");
 	}
 
-	private void printSingleFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
+	private void printSingleFile(File mainDir, TreeMap<Date, HashMap<Indicator, String>> treeMap, int expIndex) {
 		int i;
 		File singleFile;
 		BufferedWriter writer;
 		try {
-			singleFile = new File(mainDir.getPath() + "/" + expName + ".csv");
-			writer = new BufferedWriter(new FileWriter(singleFile));
-			writer.write("expNumber,#,datetime,ms");
-			for(Indicator ind : expData.getFirst().firstEntry().getValue().keySet()){
-				writer.write("," + ind.getIndName());
+			AppLogger.logInfo(getClass(), "Storing in " + mainDir.getPath() + File.separatorChar + expName + ".csv");
+			singleFile = new File(mainDir.getPath() + File.separatorChar + expName + ".csv");
+			if(singleFile.exists()) {
+				writer = new BufferedWriter(new FileWriter(singleFile, true));
+			} else {
+				writer = new BufferedWriter(new FileWriter(singleFile));
+				writer.write("expNumber,#,datetime,ms");
+				if (treeMap != null){
+					for(Indicator ind : treeMap.firstEntry().getValue().keySet()){
+						writer.write("," + ind.getIndName());
+					}
+					writer.newLine();
+				}
 			}
-			writer.newLine();
-			for(int k=0;k<expData.size();k++){
+			if (treeMap != null){
 				i = 0;
-				for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
-					writer.write((k+1) + "," + (++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+				for(Entry<Date, HashMap<Indicator, String>> mapEntry : treeMap.entrySet()){
+					writer.write((expIndex+1) + "," + (++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
 					for(String value : mapEntry.getValue().values()){
 						writer.write("," + value);
 					}
 					writer.newLine();
 				}
+			} else {
+				AppLogger.logError(getClass(), "NoData", "Unable to print data to file, null object");
 			}
+			
 			writer.close();
 		} catch (IOException ex) {
 			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");
 		}
 	}
 	
-	private void printEachIndicatorFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
-		int i;
+	private void printEachIndicatorFile(File mainDir, TreeMap<Date, HashMap<Indicator, String>> expData, int expNumber) {
 		File singleFile;
 		BufferedWriter writer;
 		try {
-			for(Indicator ind : expData.getFirst().firstEntry().getValue().keySet()){
-				i = 0;
+			for(Indicator ind : expData.firstEntry().getValue().keySet()){
 				singleFile = new File(mainDir.getPath() + "/" + expName + "_"+ ind.getIndName() + ".csv");
 				writer = new BufferedWriter(new FileWriter(singleFile));
 				writer.write("expNumber,#,datetime,ms," + ind.getIndName());
 				writer.newLine();
-				for(int k=0;k<expData.size();k++){
-					for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
-						writer.write((k+1) + "," + (++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
-						writer.write("," + mapEntry.getValue().get(ind));
-						writer.newLine();
-					}
+				int i = 0;
+				for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.entrySet()){
+					writer.write((expNumber+1) + "," + (++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+					writer.write("," + mapEntry.getValue().get(ind));
+					writer.newLine();
 				}
 				writer.close();
 			}
@@ -459,57 +468,51 @@ public class ExperimentSetup extends Observable {
 		}
 	}
 
-	private void printEachExperimentFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
-		int i;
+	private void printEachExperimentFile(File mainDir, TreeMap<Date, HashMap<Indicator, String>> expData, int expNumber) {
 		File singleFile, subDir;
 		BufferedWriter writer;
 		try {
-			for(int k=0;k<expData.size();k++){
-				i = 0;
-				subDir = new File(mainDir.getPath() + "/" + expName + "_run_" + (k+1));
-				subDir.mkdir();
-				singleFile = new File(subDir.getPath() + "/" + expName + "_run_" + (k+1) + ".csv");
-				writer = new BufferedWriter(new FileWriter(singleFile));
-				writer.write("#,datetime,ms");
-				for(Indicator ind : expData.get(k).firstEntry().getValue().keySet()){
-					writer.write("," + ind.getIndName());
+			subDir = new File(mainDir.getPath() + "/" + expName);
+			subDir.mkdir();
+			singleFile = new File(subDir.getPath() + "/" + expName + ".csv");
+			writer = new BufferedWriter(new FileWriter(singleFile));
+			writer.write("#,datetime,ms");
+			for(Indicator ind : expData.firstEntry().getValue().keySet()){
+				writer.write("," + ind.getIndName());
+			}
+			writer.newLine();
+			int i = 0;
+			for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.entrySet()){
+				writer.write((++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+				for(String value : mapEntry.getValue().values()){
+					writer.write("," + value);
 				}
 				writer.newLine();
-				for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
-					writer.write((++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
-					for(String value : mapEntry.getValue().values()){
-						writer.write("," + value);
-					}
-					writer.newLine();
-				}
-				writer.close();
 			}
+			writer.close();
 		} catch (IOException ex) {
 			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");
 		}
 	}
 	
-	private void printEachExperimentEachIndicatorFile(File mainDir, LinkedList<TreeMap<Date, HashMap<Indicator, String>>> expData) {
-		int i;
+	private void printEachExperimentEachIndicatorFile(File mainDir, TreeMap<Date, HashMap<Indicator, String>> expData, int expNumber) {
 		File singleFile, subDir;
 		BufferedWriter writer;
 		try {
-			for(int k=0;k<expData.size();k++){
-				subDir = new File(mainDir.getPath() + "/" + expName + "_run_" + (k+1));
-				subDir.mkdir();
-				for(Indicator ind : expData.get(k).firstEntry().getValue().keySet()){
-					i = 0;
-					singleFile = new File(subDir.getPath() + "/" + expName + "_run_" + (k+1) + "_" + ind.getIndName() + ".csv");
-					writer = new BufferedWriter(new FileWriter(singleFile));
-					writer.write("#,datetime,ms," + ind.getIndName());
+			subDir = new File(mainDir.getPath() + "/" + expName + "_run_" + (expNumber+1));
+			subDir.mkdir();
+			for(Indicator ind : expData.firstEntry().getValue().keySet()){
+				singleFile = new File(subDir.getPath() + "/" + expName + "_run_" + (expNumber+1) + "_" + ind.getIndName() + ".csv");
+				writer = new BufferedWriter(new FileWriter(singleFile));
+				writer.write("#,datetime,ms," + ind.getIndName());
+				writer.newLine();
+				int i = 0;
+				for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.entrySet()){
+					writer.write((++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
+					writer.write("," + mapEntry.getValue().get(ind));
 					writer.newLine();
-					for(Entry<Date, HashMap<Indicator, String>> mapEntry : expData.get(k).entrySet()){
-						writer.write((++i) + "," + mapEntry.getKey().toString() + "," + mapEntry.getKey().getTime());
-						writer.write("," + mapEntry.getValue().get(ind));
-						writer.newLine();
-					}
-					writer.close();
 				}
+				writer.close();
 			}
 		} catch (IOException ex) {
 			AppLogger.logException(getClass(), ex, "Unable to write output of each experiments");

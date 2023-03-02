@@ -27,9 +27,17 @@ public class CompositeArrayBeanAttribute extends BeanAttribute {
 	@Override
 	public String getStringValue(Object attObject) {
 		Object[] vect = (Object[]) attObject;
-		if(vect[arrayIndex] instanceof CompositeDataSupport)
-			return ((CompositeDataSupport)vect[arrayIndex]).get(key).toString();
-		else return ((CompositeData)vect[arrayIndex]).get(key).toString();
+		if(vect[arrayIndex] instanceof CompositeDataSupport) {
+			Object data = ((CompositeDataSupport)vect[arrayIndex]).get(key);
+			if (data != null)
+				return data.toString();
+			else return "null";
+		} else {
+			Object data = ((CompositeData)vect[arrayIndex]).get(key);
+			if (data != null)
+				return data.toString();
+			else return "null";
+		}
 	}
 
 	@Override
